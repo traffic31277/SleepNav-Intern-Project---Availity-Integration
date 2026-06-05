@@ -1,0 +1,3 @@
+Middleware that extracts information from Availity API. Python and JavaScript versions available. 
+
+Divided into file by URL, each folder needs to have a _login.json file added with API_KEY and API_SECRET. 
