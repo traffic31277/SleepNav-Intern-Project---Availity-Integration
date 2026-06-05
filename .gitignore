@@ -5,6 +5,7 @@
 # specific file ignores
 */_login.json
 */test.*
+*/output*
 
 # Node modules
 /integration_js/node_modules
