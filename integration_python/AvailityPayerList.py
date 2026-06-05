@@ -3,23 +3,21 @@ import json
 from AvailityAbstract import AvailityABC
 
 class PayerList(AvailityABC):
-    def __init__(self, key, secret, patientJSON=None, providerJSON=None, subscriberJSON=None):
-        super().__init__(key, secret, patientJSON, providerJSON, subscriberJSON)
+    """ Provides access to the Healthcare Transactions Payer List API"""
+    def __init__(self, key, secret):
+        super().__init__(key, secret, None)
 
-    def searchPayerList(self, payerId=None, transactionType=None, submissionMode=None, 
-                        availibility=None, enrollmentRequired=None):
-        """_summary_
+    def searchPayerList(self, parameters=None):
+        """Search Payer list based on input parameters
 
         Args:
-            payerId (str, optional): The payer's Availity-specific identifier.
-            transactionType (str, optional): The code identifying the EDI/HIPAA transaction(s) supported by a payer.
-            submissionMode (str, optional): Accepted method of submission. Can be: Portal, Batch, RealTime, API
-            availibility (str optional): _description_.
-            enrollmentRequired (bool, optional).
+            parameters(json | filename | dict, optional): search parameters.
+              can include payerId, transactionType, submissionMode, availability, enrollmentRequired. 
+              Desc of each available at: https://developer.availity.com/blog/2025/3/25/hipaa-transactions#payer_list:~:text=payers%20and%20transactions.-,Parameters,-Parameter
         """
-
-        parameters= {"payerId":payerId, "transactionType":transactionType, "submissionMode":submissionMode,
-                 "availibility":availibility, "enrollmentRequired":enrollmentRequired}
+        # clean parameters for input
+        parameters = self.parseInfo(parameters)
+        print(parameters)
         parameters={x:parameters[x] for x in parameters.keys() if parameters[x] is not None}
 
         payerSearch = requests.get(
