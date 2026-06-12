@@ -73,3 +73,42 @@ class AvailityABC(ABC):
                 f"Authentication Token could not be set."
                 f"\n{token_request['error']} : {token_request['error_description']}"))
             
+    def checkRequiredArgs(self, params, payerId, type, subTypeId=None):
+        
+        body = { "payerId":payerId, "type":type}
+        if subTypeId is not None:
+            body['subTypeId':subTypeId]
+
+        config = requests.get(
+            url=r"https://api.availity.com/v1/configurations",
+            headers={
+                "Authorization": self.authentication,
+            },
+            data=body
+        ).json()
+        
+        req = []
+        allowed = []
+
+        for con in config['configurations']:
+            elements = con['elements'].keys()
+            for element in elements:
+                if con['elements'][element]['required'] == True:
+                    req.append(element)
+                if con['elements'][element]['allowed'] == True:
+                    allowed.append(element)
+
+        try:
+        # Will throw if missing
+            for par in req:
+                t = params[par]
+
+            # will throw if not in allowed list
+            for par in params.keys():
+                allowed.remove(par)
+        
+        except KeyError as err:
+            raise Exception('Missing required parameter') from err
+        
+        except ValueError as err:
+            raise Exception('Disallowed paramter input') from err

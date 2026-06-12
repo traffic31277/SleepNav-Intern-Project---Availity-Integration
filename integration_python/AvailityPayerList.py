@@ -17,7 +17,6 @@ class PayerList(AvailityABC):
         """
         # clean parameters for input
         parameters = self.parseInfo(parameters)
-        print(parameters)
         parameters={x:parameters[x] for x in parameters.keys() if parameters[x] is not None}
 
         payerSearch = requests.get(

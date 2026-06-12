@@ -11,7 +11,7 @@ class Coverages(AvailityABC):
     def __init__(self, key, secret, patientJSON = None):
         super().__init__(key, secret, patientJSON)
 
-    def coveragePolling(self, returnIds=False, _patient=None):
+    def coveragePolling(self, params: json, returnIds=False, _patient=None):
         """Poll for coverage information given a patients information
 
         Args:
@@ -23,12 +23,25 @@ class Coverages(AvailityABC):
 
         Returns:
             list[str] | json: returns list of ids (strings) or a list of coverages in json format. 
+
+        Raises:
+            Exception: KeyError if missing required arg for polling 
+            config (payer.id and requestTypeCode)
+            Exception: If response from coverage API failed
         """
 
         if _patient is None:
             _patient = self.patient
         else:
             _patient = self.parseInfo(_patient)
+
+        parameters = self.parseInfo(parameters)
+        parameters={x:parameters[x] for x in parameters.keys() if parameters[x] is not None}
+
+        try:
+            self.checkRequiredArgs(params, params['payer']['id'], 207)
+        except KeyError as err:
+            raise Exception('Missing key search parameter(payer id or request type code)') from err
 
         try:
             coveragePoll = requests.post(
@@ -37,12 +50,11 @@ class Coverages(AvailityABC):
                     'Authorization': self.authentication,
                     'Content-Type': 'application/x-www-form-urlencoded'
                 },
-                data=_patient
+                data={**parameters, **_patient}
             ).json()
             coverages = coveragePoll['coverages']
-            
         except:
-            print(f"Error polling coverage information\n"
+            raise Exception(f"Error polling coverage information\n"
                   f"{coveragePoll['error']: coveragePoll['error_description']}")
 
         ids = [''] * len(coverages)
