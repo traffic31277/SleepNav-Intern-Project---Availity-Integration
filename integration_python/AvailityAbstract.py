@@ -5,7 +5,6 @@ from abc import ABC
 class AvailityABC(ABC):
     """Abstract class for all Availity API objects."""
     def __init__(self, key, secret, patientJSON: str=None):
-        self.patient = self.parseInfo(patientJSON)
         self.resetToken(key, secret)
 
     def parseInfo(self, jsonFile=None) -> dict:
@@ -23,15 +22,7 @@ class AvailityABC(ABC):
                 return {}
         except:
             return {}
-        
-    @property
-    def patient(self):
-        return self._patient
-
-    @patient.setter
-    def patient(self, value):
-        self._patient=self.parseInfo(value)
-    
+            
     def resetToken(self, key=None, secret=None, login=None):
         """Retrieves 5 minute API access token and sets self.authentication accordingly.\n
         All args default to None to allow for option of input key, secret or login file.\n

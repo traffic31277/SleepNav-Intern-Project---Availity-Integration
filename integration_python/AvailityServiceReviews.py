@@ -9,7 +9,8 @@ class ServiceReview(AvailityABC):
     def __init__(self, key, secret, patientJSON = None):
         super().__init__(key, secret, patientJSON)
     
-    def pollAuth(self, params: json):
+    def get(self, params: json):
+        # TODO: update, old and does not reflect current workflow. 
         """Sends service review inquiry based on params.
 
         Args:
@@ -20,17 +21,18 @@ class ServiceReview(AvailityABC):
             config (payer.id and requestTypeCode)
         """
 
-        parmas = self.parseInfo(params)
+        params = self.parseInfo(params)
         parameters = {x:params[x] for x in params.keys() if x is not None}
-        body = {**self.patient, **parameters}
+        body = {**parameters}
 
         # checking with config what params are required
-        try:
-            self.checkRequiredArgs(params, params['payer']['id'],
-                                   'service-review',params['requestTypeCode'])  
-        except KeyError as err:
-            raise Exception('Missing key search parameter(payer id or request type code)') from err
+        # TODO: uncomment when can check
 
+        # try:
+        #     self.checkRequiredArgs(params, params['payer']['id'],
+        #                            'service-review', params['requestTypeCode'])  
+        # except KeyError as err:
+        #     raise Exception('Missing key search parameter(payer id or request type code)') from err
 
         srInquiry = requests.get(
             url="https://api.availity.com/availity/v2/service-reviews",
@@ -40,4 +42,6 @@ class ServiceReview(AvailityABC):
             },
             params=body
         )
+
+        return srInquiry.json()
 

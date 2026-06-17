@@ -8,10 +8,10 @@ class Coverages(AvailityABC):
     Can be used to view plan benefits and current status.
     """
 
-    def __init__(self, key, secret, patientJSON = None):
-        super().__init__(key, secret, patientJSON)
+    def __init__(self, key, secret):
+        super().__init__(key, secret)
 
-    def coveragePolling(self, params: json, returnIds=False, _patient=None):
+    def get(self, parameters: json, returnIds=False):
         """Poll for coverage information given a patients information
 
         Args:
@@ -29,20 +29,16 @@ class Coverages(AvailityABC):
             config (payer.id and requestTypeCode)
             Exception: If response from coverage API failed
         """
-
-        if _patient is None:
-            _patient = self.patient
-        else:
-            _patient = self.parseInfo(_patient)
-
         parameters = self.parseInfo(parameters)
         parameters={x:parameters[x] for x in parameters.keys() if parameters[x] is not None}
 
-        try:
-            self.checkRequiredArgs(params, params['payer']['id'], 207)
-        except KeyError as err:
-            raise Exception('Missing key search parameter(payer id or request type code)') from err
+        # TODO: uncomment
+        # try:
+        #     self.checkRequiredArgs(parameters, parameters['payer']['id'], 207)
+        # except KeyError as err:
+        #     raise Exception('Missing key search parameter(payer id or request type code)') from err
 
+        # TODO: uncomment
         try:
             coveragePoll = requests.post(
                 url='https://api.availity.com/availity/v1/coverages',
@@ -50,7 +46,7 @@ class Coverages(AvailityABC):
                     'Authorization': self.authentication,
                     'Content-Type': 'application/x-www-form-urlencoded'
                 },
-                data={**parameters, **_patient}
+                data=parameters
             ).json()
             coverages = coveragePoll['coverages']
         except:
