@@ -1,0 +1,208 @@
+{
+    "coverages" : [
+        {
+            "links": {
+                "self": {
+                    "href": "https://api.availity.com/availity/v1/coverages/0001194499098175762045868562105833796329766732695450956940743265"
+                }
+            },    
+            "customerId": "1234",
+            "requestedServiceType": [
+                {
+                "code": "30",
+                "value": "Health Benefit Plan Coverage"
+                }
+            ],
+            "subscriber": {"memberId": "1234567890" },
+            "patient": {
+                "subscriberRelationship": "Self",
+                "subscriberRelationshipCode": "18",
+                "birthDate": "1990-01-01T05:00:00.000+0000"
+            },
+            "payer": {
+                "name": "HEALTHPLANONE",
+                "payerId": "HEALTHPLANONE"
+            },
+            "requestingProvider": { "taxId": "123123123" },
+            "procedureCode": ["123"],
+            "plans": [
+                {
+                    "status": "Active",
+                    "statusCode": "0",
+                    "identityCardNumber": "123456789",
+                    "groupNumber": "123",
+                    "groupName": "GROUP1",
+                    "policyNumber": "123",
+                    "planNumber": "PlanName",
+                    "planNetworkId": "1234",
+                    "planNetworkName": "PlanNetworkName",
+                    "contactClassCode": "A18",
+                    "medicalRecordNumber": "111",
+                    "healthInsuranceClaimNumber": "1",
+                    "identificationCardSerialNumber": "",
+                    "issueNumber":"",
+                    "medicaidRecipientIdentificationNumber":"",
+                    "priorIdentificationNumber":"",
+                    "agencyClaimNumber":"",
+                    "admissionDate":"",
+                    "dischargeDate":"",
+                    "issueDate":"",
+                    "serviceDate":"",
+                    "coverageStartDate":"",
+                    "coverageEndDate":"",
+                    "planStartDate":"",
+                    "planEndDate":"",
+                    "planEnrollmentDate":"",
+                    "certificationDate":"",
+                    "policyEffectiveDate":"",
+                    "policyExpirationDate":"",
+                    "effectiveChangeDate":"",
+                    "eligibilityStartDate":"",
+                    "eligibilityEndDate":"",
+                    "cobraStartDate":"",
+                    "cobraEndDate":"",
+                    "lastUpdateDate":"",
+                    "addedDate":"",
+                    "premiumPaidToBeginDate":"",
+                    "premiumPaidToEndDate":"",
+                    "periodStartDate":"",
+                    "periodEndDate":"",
+                    "statusDate":"",
+                    "additionalPayers": [],
+                    "primaryCareProvider": [],
+                    "contacts": [],
+                    "benefits": [
+                        {
+                            "name":"",
+                            "type":"",
+                            "source":"",
+                            "status":"",
+                            "statusCode":"",
+                            "statusDetails":{
+                                "inNetwork":[{
+                                    "coPayment": {},
+                                    "outOfPocket":{},
+                                    "deductibles":{},
+                                    "coInsurance":{}
+                                }],
+                                "outOfNetwork":[{
+                                    "coPayment": {},
+                                    "outOfPocket":{},
+                                    "deductibles":{},
+                                    "coInsurance":{}
+                                }],
+                                "notApplicableNetwork":[{
+                                    "coPayment": {},
+                                    "outOfPocket":{},
+                                    "deductibles":{},
+                                    "coInsurance":{}
+                                }],
+                                "noNetwork":[{
+                                    "coPayment": {},
+                                    "outOfPocket":{},
+                                    "deductibles":{},
+                                    "coInsurance":{}
+                                }]
+                            },
+                            "amounts":{
+                                "coPayment":{
+                                    "status":"",
+                                    "statusCode":"",
+                                    "insuranceType":"",
+                                    "insuranceTypeCode":"",
+                                    "amount":"",
+                                    "unit":"",
+                                    "amountTimePeriod":"",
+                                    "amountTimePeriodCode":"",
+                                    "remaining":"",
+                                    "remainingTimePeriod":"",
+                                    "remainingTimePeriodCode":"",
+                                    "total":"",
+                                    "totalTimePeriod":"",
+                                    "totalTimePeriodCode":"",
+                                    "level":"",
+                                    "levelCode":"",
+                                    "quantity":"",
+                                    "quantityQualifier":"",
+                                    "quantityQualifierCode":"",
+                                    "authorizationRequired":"",
+                                    "authorizationRequiredUnknown":"",
+                                    "placeOfService":"",
+                                    "placeofServiceCode":"",
+                                    "description":"",
+                                    "planNumber":"",
+                                    "planName":"",
+                                    "memberIdentificationNumber":"",
+                                    "familyUnitNumber":"",
+                                    "groupNumber":"",
+                                    "groupName":"",
+                                    "referralNumber":"",
+                                    "healthInsuranceClaimNumber":"",
+                                    "priorAuthorizationNumber":"",
+                                    "insurancePolicyNumber":"",
+                                    "planNetworkId":"",
+                                    "planNetworkName":"",
+                                    "medicaidRecipientIdentificationNumber":"",
+                                    "dischargeDate":"",
+                                    "periodStartDate":"",
+                                    "periodEndDate":"",
+                                    "completionDate":"",
+                                    "coordinationOfBenefitsDate":"",
+                                    "coordinationOfBenefitsStartDate":"",
+                                    "coordinationOfBenefitsEndDate":"",
+                                    "coverageStartDate":"",
+                                    "coverageEndDate":"",
+                                    "addedDate":"",
+                                    "planStartDate":"",
+                                    "primaryCareProviderDate":"",
+                                    "lastVisitDate":"",
+                                    "eligibilitStartDate":"",
+                                    "eligibilityEndDate":"",
+                                    "benefitBeginDate":"",
+                                    "benefitEndDate":"",
+                                    "admissionDate":"",
+                                    "serviceDate":"",
+                                    "lastUpdateDate":"",
+                                    "statusDate":""
+                                },
+                                "outOfPocket":{},
+                                "deductibles":{},
+                                "coInsurance":{}
+                            },
+                            "limitations":{},
+                            "benefitDescriptions":{},
+                            "nonCovered":{},
+                            "coverageBasis":{},
+                            "reserve":{},
+                            "preexistingConditions":{},
+                            "costContainment":{},
+                            "exclusions":{},
+                            "additionalPayers":[],
+                            "contact":[]
+                        }
+                    ],
+                    "preexistingConditions": {},
+                    "costContainment": {},
+                    "limitations": {},
+                    "benefitDescriptions": {},
+                    "coverageBasis": {},
+                    "insuranceType": "TYPE",
+                    "insuranceTypeCode": "CODE",
+                    "primaryCareprovider": {
+                        "name":"",
+                        "category":"",
+                        "categoryCode":""
+                    }
+                }
+            ],
+
+            "supplementalInformation": {
+                "professionalPatientCostEstimator": false,
+                "institutionalPatientCostEstimator": false,
+                "patientCareSummary": false,
+                "assessmentCarePlan": false,
+                "outOfArea": false
+            }
+        }
+    ]
+}

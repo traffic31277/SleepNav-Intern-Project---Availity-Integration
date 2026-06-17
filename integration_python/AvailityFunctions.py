@@ -1,24 +1,34 @@
 import json
-from AvailityAbstract import AvailityABC
 from AvailityCoverages import Coverages
 from AvailityServiceReviews import ServiceReview
-from AvailityPayerList import PayerList
 import requests
+
+#TODO: fill out sample json responses to test parsing. 
 
 
 def validateInsurance(key, secret):
-    c = Coverages(key, secret, patientJSON='_patient.json')
-    coverages = c.coveragePolling()
+    c = Coverages(key, secret)
+    s = ServiceReview(key, secret)
 
+    coverages = c.coveragePolling()
+    srInfo = s.pollAuth()
+
+    res = []
+
+    # There should only be 1-3 plans.
+    # TODO: Consider only pulling if the plan has medical care coverage
     for plan in coverages['plans']:
-        res = {
+        res.append({
+            "status":plan['status'],
+            "statusCode": plan['statusCode'],
             "startDate": plan['eligibilityStartDate'],
             "endDate": plan['eligibilityEndDate'],
-            "insuranceType": plan['insuranceTypeCode'],
-            "planType": plan['type'],
-        }
+            "insuranceType": plan['insuranceTypeCode'], #HMO, etc
+            "planType": plan['type'],   # medical care, dental, etc
+        })
 
-    res['OutOfState': coverages['supplementalInformation']['outOfArea']]
+
+    res.append({'OutOfState': coverages['supplementalInformation']['outOfArea']})
     return res
 
 def pullBenefits(key, secret):
@@ -28,6 +38,7 @@ def pullBenefits(key, secret):
     coverages = c.coveragePolling()
     srInfo = s.pollAuth()
 
+    # TODO: combine this + validate insurance functions into one
     # plans
     res = {"plans":[]}
     for plan in coverages['plans']:
@@ -48,7 +59,7 @@ def pullBenefits(key, secret):
 def getAuthInfo(key, secret):
     s = ServiceReview(key, secret)
     c = Coverages(key, secret)
-    authReq = c.coveragePolling()[0][""]
+    authReq = c.coveragePolling()[0]
     srInfo = s.pollAuth()
 
     res = {
@@ -72,7 +83,7 @@ def patientPaymentInfo(key, secret):
         planBen = []
         for benefit in plan['benefits']: 
             benefits = {"name":benefit['name'], "outOfPocketRemaining":benefit['costContainment']}
-            for i in ['deductible', 'outOfPocket', 'deductibles', 'coInsurance', 'coPay']:
+            for i in ['outOfPocket', 'deductibles', 'coInsurance', 'coPay']:
                 benefits[i] = (benefit['amounts'][i][network]['amount'],
                                benefit['amounts'][i][network]['unit'])
                 

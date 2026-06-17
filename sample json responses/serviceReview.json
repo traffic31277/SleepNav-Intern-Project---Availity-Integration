@@ -1,0 +1,100 @@
+{
+    "id": "123",
+    "customerId": "123",
+    "userId": "123",
+    "status": "Certified in Total",
+    "statusCode": "A1",
+    "statusReasons": {
+        },
+    "createddate":"2015-01-01T05:00:00.000+0000",
+    "updateddate":"2015-01-01T05:00:00.000+0000",
+    "expirationdate":"2015-01-01T05:00:00.000+0000",
+    "controlNumber": "",
+    "shortFormIndicator": false,
+    "updatable": false,
+    "updateableFields": [],
+    "deletable": false,
+    "validationMessages": [{}],
+    "certificationIssuedate":"2015-01-01T05:00:00.000+0000",
+    "certificationEffectivedate":"2015-01-01T05:00:00.000+0000",
+    "certificationExpirationdate":"2015-01-01T05:00:00.000+0000",
+    "certificationNumber": "",
+    "referenceNumber": "",
+    "traceNumbers": [],
+    "requestType": "Service Review",
+    "requestTypeCode": "SR",
+    "payer": {
+        "name" : "FLORIDA BLUE",
+        "id" : "BCBSF"
+    },
+    "payerNotes": [{}],
+    "providerNotes": [],
+    "requestingProvider": {
+        "lastName" : "SLICE AND DICE DISCOUNT SURGERY",
+        "npi" : "1234567893"
+    },
+    "subscriber": {
+        "firstName" : "FRED",
+        "lastName" : "FLINTSTONE",
+        "memberId" : "ASDF23123123"
+    },
+    "patient" : {
+        "firstName" : "BRUCE",
+        "lastName" : "WAYNE",
+        "subscriberRelationship" : "Self",
+        "subscriberRelationshipCode" : "18",
+        "birthDate" : "1962-08-10",
+        "medicareCoverage": false
+    },
+    "diagnoses": [
+        {
+            "qualifier": "International Classification of Diseases Clinical Modification (ICD-10-CM) Principal Diagnosis",
+            "qualifierCode": "BF",
+            "value": "Cholera d/t vib el tor",
+            "code": "0011",
+            "date": "2014-11-17T05:00:00.000+0000"
+        }
+    ],
+    "serviceType": "Medical Care",
+    "serviceTypeCode": "1",
+    "additionalServiceType": [],
+    "placeOfService": "Inpatient Hospital",
+    "placeOfServiceCode": "21",
+    "quantity": "2",
+    "quantityType": "Days",
+    "quantityTypeCode": "DY",
+    "renderingProviders": [{}],
+    "procedures": [
+        {
+            "status":"",
+            "statusCode":"",
+            "statusReasons":"",
+            "certificationIssuedate":"2015-01-01T05:00:00.000+0000",
+            "certificationEffectivedate":"2015-01-01T05:00:00.000+0000",
+            "certificationExpirationdate":"2015-01-01T05:00:00.000+0000",
+            "certificationNumber":"",
+            "qualifier":"",
+            "qualifierCode":"",
+            "value":"",
+            "code":"",
+            "description":"",
+            "quantity":"",
+            "quantityType":"",
+            "quantityTypeCode":"",
+            "fromdate":"2015-01-01T05:00:00.000+0000",
+            "todate":"2015-01-01T05:00:00.000+0000"
+        }
+    ],
+    "supplementalInformation": {
+        "attachments": { },
+        "diagnoses": {
+
+        },
+        "procedures": {
+
+        },
+        "refAuthNumber":"",
+        "sequence":"",
+        "updateType":""
+    }
+}

@@ -3,7 +3,7 @@ import subscriber from './_subscriber.json' with {type: 'json'};
 import provider from './_provider.json' with {type: 'json'};
 import axios from 'axios';
 
-const url = "/v1/coverages";
+export const url = "/v1/coverages";
 
 /**
  * Polls the coverage API given the patient information (memberID, DOB, State). 

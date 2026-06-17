@@ -101,7 +101,7 @@ class AvailityABC(ABC):
         try:
         # Will throw if missing
             for par in req:
-                t = params[par]
+                _ = params[par]
 
             # will throw if not in allowed list
             for par in params.keys():
