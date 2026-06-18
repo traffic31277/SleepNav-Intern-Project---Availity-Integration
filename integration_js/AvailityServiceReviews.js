@@ -1,20 +1,13 @@
-import patient from './_patient.json' with {type: 'json'};
-import subscriber from './_subscriber.json' with {type: 'json'};
-import provider from './_provider.json' with {type: 'json'};
 import axios from 'axios';
-
 const url = "/v2/service-reviews";
 let sessionId = "0";
 
-export async function pollAuthorizations(requestTypeCode=null, payerId=null, submitterId=null,
-    toDate=null, fromDate=null
-) {
-    let body = Object.assign({}, [patient, subscriber, provider]);
+export async function pollAuthorizations (parameters) {
     try {
         const poll = await axios.get(
             url,
             {
-                params: body,
+                params: parameters,
                 headers: { "Content-Type": "application/x-www-form-urlencoded" }
             },
         );

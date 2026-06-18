@@ -8,7 +8,7 @@ from hashlib import md5
 #TODO: figure out how to determine if in network
 #TODO: replicate all for js
 
-def retrieve_info(key: str, secret: str, params: json, api: str) -> str:
+def retrieveInfo(key: str, secret: str, params: json, api: str) -> str:
     """Retrieve cached response info
 
     Args:
@@ -34,7 +34,7 @@ def retrieve_info(key: str, secret: str, params: json, api: str) -> str:
 
     return hash
 
-def read_cached_file(key, secret, params, hash:tuple[str, str]=None) -> json:
+def readCachedFile(key, secret, params, hash:tuple[str, str]=None) -> json:
     """pull cached/cache api results for parsing
 
     Args:
@@ -61,9 +61,19 @@ def read_cached_file(key, secret, params, hash:tuple[str, str]=None) -> json:
             res["data"] = json.load(file)
         return res
     except Exception:
-        _hash = retrieve_info(key, secret, params, hash[0])
-        return read_cached_file(key, secret, params, (hash[0], _hash))
+        _hash = retrieveInfo(key, secret, params, hash[0])
+        return readCachedFile(key, secret, params, (hash[0], _hash))
+
+def getFromApi(key: str, secret: str, params: json, api: str) -> json:
+    if api == "coverages":
+        api = Coverages(key, secret)
+    elif api == "serviceReview":
+        api = ServiceReview(key, secret)
+    else:
+        raise Exception("Did not enter valid api, choose 'coverages' or 'serviceReview'")
     
+    return api.get(params)
+
 # ------ # 
 def validateInsurance(key, secret, params, hash=None):
     """Pulls insurance information for all plans returned from params. 
@@ -78,8 +88,12 @@ def validateInsurance(key, secret, params, hash=None):
             status (active, etc.), statusCode, eligibilityStartDate, eligibilityEndDate,
             insuranceTypeCode (HMO?, etc), type (Medical Care, Vision, etc.)
     """
-    ApiResults = read_cached_file(key, secret, params, ("coverages",hash))
-    coverages = ApiResults['data']['coverages'][0]
+
+    coverages = getFromApi(key, secret, params, "coverages")['coverages'][0]
+
+    # uncomment if using cache
+    # ApiResults = readCachedFile(key, secret, params, ("coverages", hash))
+    # coverages = ApiResults['data']['coverages'][0]
 
     res = []
 
@@ -92,6 +106,7 @@ def validateInsurance(key, secret, params, hash=None):
                 planInfo[item] = plan[item]
             except:
                 continue
+
         res.append(planInfo)
 
     res.append({'OutOfState': coverages['supplementalInformation']['outOfArea']})
@@ -112,10 +127,14 @@ def pullBenefits(key, secret, params, hashes:tuple=None):
     Returns:
         list[json]: results
     """
-    ApiResults = read_cached_file(key, secret, params, ("coverages", hashes[0]))
-    coverages = ApiResults['data']['coverages'][0]
 
-    # ApiResults = read_cached_file(key, secret, params, ("serviceReview", hashes[1]))
+    coverages = getFromApi(key, secret, params, "coverages")['coverages'][0]
+    # srInfo = getFromApi(key, secret, params, "serviceReview")['serviceReview'][0]
+    
+    # ApiResults = readCachedFile(key, secret, params, ("coverages", hashes[0]))
+    # coverages = ApiResults['data']['coverages'][0]
+
+    # ApiResults = readCachedFile(key, secret, params, ("serviceReview", hashes[1]))
     # srInfo = ApiResults['data']['serviceReview'][0]
 
     # plans
@@ -150,12 +169,15 @@ def getAuthInfo(key, secret, params, hashes:tuple=None):
         json: if auth is required, the auth start date, auth end date,
         auth reference number, and auth status
     """
+    
+    authReq = getFromApi(key, secret, params, "coverages")['coverages'][0]
+    # srInfo = getFromApi(key, secret, params, "serviceReview")['serviceReview'][0]
 
 
-    ApiResults = read_cached_file(key, secret, params, ("coverages", hashes[0]))
-    authReq = ApiResults['data']['coverages'][0]
+    # ApiResults = readCachedFile(key, secret, params, ("coverages", hashes[0]))
+    # authReq = ApiResults['data']['coverages'][0]
 
-    # ApiResults = read_cached_file(key, secret, params, ("serviceReview", hashes[1]))
+    # ApiResults = readCachedFile(key, secret, params, ("serviceReview", hashes[1]))
     # srInfo = ApiResults['data']['serviceReview'][0]
 
     srInfo = None
@@ -184,20 +206,26 @@ def patientPaymentInfo(key, secret, params, hash=None):
     """
     network = 'inNetwork'   # find how to get network information
 
-    ApiResults = read_cached_file(key, secret, params, ("coverages",hash))
-    coverages = ApiResults['data']['coverages'][0]
+    coverages = getFromApi(key, secret, params, "coverages")['coverages'][0]
+    # ApiResults = readCachedFile(key, secret, params, ("coverages",hash))
+    # coverages = ApiResults['data']['coverages'][0]
 
     res = [] 
     for plan in coverages['plans']:
-        planBen = {}
-        for benefit in plan['benefits']: 
-            benefits = {}                
+        planBen = {"status":plan["status"]}
+        for benefit in plan['benefits']:
+            if benefit['name'] != 'Medical Care':
+                continue
+
+            benefits = {}
             try: 
                 benefits["OOPRemaining"] = benefit["CostContainment"]   # cost containment is OOP remaining
             except:
                 pass
 
-            for i in ['outOfPocket', 'deductibles', 'coInsurance', 'coPay']:
+            for i in ['outOfPocket', 'deductibles', 'coInsurance', 'coPayment']:
+                benefits[i] = None
+                
                 try:
                     benefits[i] = (benefit['amounts'][i][network]['amount'],
                                 benefit['amounts'][i][network]['unit'])
@@ -209,4 +237,3 @@ def patientPaymentInfo(key, secret, params, hash=None):
         res.append(planBen)
 
     return res
-

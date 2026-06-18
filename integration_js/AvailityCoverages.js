@@ -12,11 +12,12 @@ export const url = "/v1/coverages";
  * @param {dict} patientInfo Specify patients information. Defaults to patient.json.
  * @returns {list} A list of the plans a patient by their ids or the coverage details.
  */
-export async function coveragePolling(returnIds, patientInfo=patient) {
+
+export async function coveragePolling(parameters, returnIds=false) {
     try {
         const poll = await axios.post(
             url,
-            patientInfo,
+            parameters,
             { headers: { "Content-Type": "application/x-www-form-urlencoded" } }
         );
 
