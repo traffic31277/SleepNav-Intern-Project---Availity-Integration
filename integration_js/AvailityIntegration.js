@@ -1,13 +1,12 @@
-import patient from './_patient.json' with {type: 'json'};
 import _login from './_login.json' with {type: 'json'};
 import { coveragePolling, getCoverageSearch } from './AvailityCoverages.js';
+import { pullBenefits, validateInsurance,patientPaymentInfo } from './AvailityFunctions.js';
 import { pollAuthorizations, authsbyId } from './AvailityServiceReviews.js';
-import { searchPayerList } from './AvailityPayerList.js';
+// import { searchPayerList } from './AvailityPayerList.js';
 import axios from 'axios';
 
 // config stuff
 axios.defaults.baseURL="https://api.availity.com";
-
 
 /** 
 * Returns an authorization token that lasts 5 minutes.
@@ -22,13 +21,12 @@ async function getToken(key=_login.API_KEY, secret=_login.API_SECRET) {
             url, 
             {
                 "grant_type": "client_credentials",
-                "scope": "healthcare-hipaa-transactions-demo healthcare-hipaa-transactions-demo-demo",
+                "scope": "healthcare-hipaa-transactions-demo-demo healthcare-hipaa-transactions-demo",
                 "client_id": key,
                 "client_secret": secret,
             },
             { headers: { "Content-Type": "application/x-www-form-urlencoded", } }
         )
-        
         return response.data['access_token'];
     
     } catch(err) {
@@ -40,7 +38,8 @@ async function getToken(key=_login.API_KEY, secret=_login.API_SECRET) {
  * Sets the authorization token to a new 5 minute token.
  */
 export async function resetToken() {
-    axios.defaults.headers.common['Authorization'] = "Bearer " + await getToken(_login.API_KEY, _login.API_SECRET);
+    let token = await getToken(_login.API_KEY, _login.API_SECRET)
+    axios.defaults.headers.common['Authorization'] = "Bearer " + token;
 };
 
 /**
@@ -49,6 +48,10 @@ export async function resetToken() {
 
 
 await resetToken();
-console.log(await coveragePolling(false));
-console.log("-".repeat(20));
-console.log(await coveragePolling(true));
+
+let data = {
+    "payer":{
+        "id": "123"
+    }
+}
+console.log(await patientPaymentInfo(data));

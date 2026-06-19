@@ -1,6 +1,3 @@
-import patient from './_patient.json' with {type: 'json'};
-import subscriber from './_subscriber.json' with {type: 'json'};
-import provider from './_provider.json' with {type: 'json'};
 import axios from 'axios';
 
 export const url = "/v1/coverages";
@@ -20,7 +17,7 @@ export async function coveragePolling(parameters, returnIds=false) {
             parameters,
             { headers: { "Content-Type": "application/x-www-form-urlencoded" } }
         );
-
+        
         let coverages = poll.data['coverages'];
         const ids = [];
 

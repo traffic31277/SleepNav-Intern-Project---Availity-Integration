@@ -6,7 +6,7 @@ from hashlib import md5
 #TODO: fill out sample json responses to test parsing. 
 #TODO: fix the dict/json discrepencies
 #TODO: figure out how to determine if in network
-#TODO: replicate all for js
+#TODO: is cost containment an object?
 
 def retrieveInfo(key: str, secret: str, params: json, api: str) -> str:
     """Retrieve cached response info
@@ -194,7 +194,7 @@ def getAuthInfo(key, secret, params, hashes:tuple=None):
     return res
 
 def patientPaymentInfo(key, secret, params, hash=None):
-    """Get all payment/benefit info (deductibles, coPay, etc.)
+    """Get all payment/benefit info (deductibles, coPay, etc.) for Medical Care benefits
 
     Args:
         params (json): all search parameters
