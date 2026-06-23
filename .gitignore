@@ -6,6 +6,7 @@
 */_login.json
 */test.*
 */output*
+.~*
 
 # ignore cache
 cache/*
