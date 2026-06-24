@@ -101,7 +101,7 @@ def validateInsurance(key, secret, params, hash=None):
     # There should only be 1-3 plans, if theres more than that narrow search parameters. 
     for plan in coverages['plans']:
         planInfo = {}
-        for item in ['status','statusCode','eligibilityStartDate','eligibilityEndDate',
+        for item in ['name','status','statusCode','eligibilityStartDate','eligibilityEndDate',
                      'insuranceTypeCode','type']:
             try:
                 planInfo[item] = plan[item]

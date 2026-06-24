@@ -24,8 +24,8 @@ class AvailityABC(ABC):
             return {}
             
     def resetToken(self, key=None, secret=None, login=None):
-        """Retrieves 5 minute API access token and sets self.authentication accordingly.\n
-        All args default to None to allow for option of input key, secret or login file.\n
+        """Retrieves 5 minute API access token and sets self.authentication accordingly.
+        All args default to None to allow for option of input key, secret or login file.
         Prioritizes manual key/secret input.
         
         Args:
