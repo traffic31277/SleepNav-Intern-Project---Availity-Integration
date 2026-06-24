@@ -3,12 +3,12 @@ import json
 from abc import ABC
 
 class AvailityABC(ABC):
-    """Abstract class for all Availity API objects."""
+    """Abstract class for all Availity API classes."""
     def __init__(self, key, secret, patientJSON: str=None):
         self.resetToken(key, secret)
 
     def parseInfo(self, jsonFile=None) -> dict:
-        """Parses json file or filename and returns corresponding python dictonary.
+        """Parses json file (or filename of a json object) and returns corresponding python dictonary.
 
         Args:
             jsonFile (json | string | dict, optional): Defaults to None (returns {}).
@@ -26,12 +26,13 @@ class AvailityABC(ABC):
     def resetToken(self, key=None, secret=None, login=None):
         """Retrieves 5 minute API access token and sets self.authentication accordingly.
         All args default to None to allow for option of input key, secret or login file.
-        Prioritizes manual key/secret input.
+        <br>Prioritizes manual key/secret input.
         
         Args:
-            key (string, optional): API Key.
-            secret (string, optional): API secret.
-            login (json | string, optional): filename of json with login or json itself.
+            key (string, optional): API key
+            secret (string, optional): API secret
+            login (json | string, optional): filename of json with login or json object 
+                with 'key' and 'secret'
         """
         if key is not None and secret is not None:
             _key = key
@@ -65,6 +66,20 @@ class AvailityABC(ABC):
                 f"\n{token_request['error']} : {token_request['error_description']}"))
             
     def checkRequiredArgs(self, params, payerId, type, subTypeId=None):
+        """Checks the configurations API to see which parameters are required
+        for a given API interaction. requires payerId and type, only some types
+        have a subtype. 
+
+        Args:
+            params (json): list of what parameters you intend to use the interaction
+            payerId (string): payerId for insurance company you are pulling from
+            type (string): the type of interaction (coverages, service-reviews)
+            subTypeId (string, optional): subtype of interaction (HS, AR, or SC for service-review). Defaults to None.
+
+        Raises:
+            Exception: KeyError if missing required parameter
+            Exception: ValueError if trying to use disallowed parameter
+        """
         
         body = { "payerId":payerId, "type":type}
         if subTypeId is not None:
@@ -102,4 +117,4 @@ class AvailityABC(ABC):
             raise Exception('Missing required parameter') from err
         
         except ValueError as err:
-            raise Exception('Disallowed paramter input') from err
+            raise Exception('Disallowed parameter input') from err

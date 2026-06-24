@@ -2,6 +2,11 @@ import requests
 import json
 from availity_python import Availity
 
+"""
+While not currently in use in utilities, it could be used to determine if a payer
+    will allow authorizations to be submitted through the api. 
+"""
+
 class PayerList(Availity.AvailityABC):
     """ Provides access to the Healthcare Transactions Payer List API"""
     def __init__(self, key, secret):

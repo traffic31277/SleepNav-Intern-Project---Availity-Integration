@@ -2,20 +2,13 @@ import json
 from availity_python import Coverages, ServiceReviews
 from hashlib import md5
 
-#TODO: figure out how to determine if in network
-# Cost Containment is a benefit detail object
-# Do speed test.....    python -m timeit    js its performance.now()
-
-
-# TODO: write complete documentation
-
-def retrieveInfo(key: str, secret: str, params: json, api: str) -> str:
+def retrieveInfo(key: str, secret: str, params, api: str) -> str:
     """Retrieve cached response info
 
     Args:
         params (json): parameters for search, should not cause issue if 
-        filled with more information than strictly necessary, given 
-        parameter cleaning. 
+            filled with more information than strictly necessary, given 
+            parameter cleaning. 
 
     Returns:
         tuple[str, str]: (hash for coverages results, hash for service review results)
@@ -35,7 +28,7 @@ def retrieveInfo(key: str, secret: str, params: json, api: str) -> str:
 
     return hash
 
-def readCachedFile(key, secret, params, hash:tuple[str, str]=None) -> json:
+def readCachedFile(key, secret, params, hash:tuple[str, str]=None):
     """pull cached/cache api results for parsing
 
     Args:
@@ -65,7 +58,7 @@ def readCachedFile(key, secret, params, hash:tuple[str, str]=None) -> json:
         _hash = retrieveInfo(key, secret, params, hash[0])
         return readCachedFile(key, secret, params, (hash[0], _hash))
 
-def getFromApi(key: str, secret: str, params: json, api: str) -> json:
+def getFromApi(key: str, secret: str, params, api: str):
     if api == "coverages":
         api = Coverages.Coverages(key, secret)
     elif api == "serviceReview":
@@ -205,7 +198,8 @@ def patientPaymentInfo(key, secret, params, hash=None):
     Returns:
         list[json]: list of plans and all of their benefits
     """
-    network = 'inNetwork'   # find how to get network information
+    #TODO: figure out how to determine if in network
+    network = 'inNetwork'
 
     coverages = getFromApi(key, secret, params, "coverages")['coverages'][0]
     # ApiResults = readCachedFile(key, secret, params, ("coverages",hash))

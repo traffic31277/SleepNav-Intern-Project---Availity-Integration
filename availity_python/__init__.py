@@ -3,15 +3,10 @@
 
 Module for middleware between the Availity Healthcare Transactions API and SleepNav. 
 
-## Dependencies/Install
-
-Built in python 3.14.5
-
-```bash
-pip install requests
-```
-
-Documentation made with pdoc
+## Tech Stack
+### Python
+Built in python 3.14.5 using [requests](https://docs.python-requests.org/en/latest/index.html
+) library. 
 
 ## Usage/Examples
 **Example:**
@@ -28,7 +23,7 @@ params = {
 res = validateInsurance(API_KEY, API_SECRET, params)
 ```
 
-**Response:**
+**Response:**<br>
 *full response should include more info (see validateInsurance() function documentation) this is what is available in the demo
 
 ```shell
@@ -38,5 +33,8 @@ res = validateInsurance(API_KEY, API_SECRET, params)
   {'OutOfState': False}
 ]
 ```
+
+## Note
+There is a discrepency in the completeness of python/js implementations. Python has more tested functionality and more complete documentation. 
 
 """

@@ -40,7 +40,7 @@
                                 <a class="function" href="#Coverages.get">get</a>
                         </li>
                         <li>
-                                <a class="function" href="#Coverages.getCoveragesSearch">getCoveragesSearch</a>
+                                <a class="function" href="#Coverages.getById">getById</a>
                         </li>
                 </ul>
 
@@ -78,76 +78,77 @@
 </span><span id="L-10"><a href="#L-10"><span class="linenos">10</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">secret</span><span class="p">):</span>
 </span><span id="L-11"><a href="#L-11"><span class="linenos">11</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">secret</span><span class="p">)</span>
 </span><span id="L-12"><a href="#L-12"><span class="linenos">12</span></a>
-</span><span id="L-13"><a href="#L-13"><span class="linenos">13</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="n">json</span><span class="p">,</span> <span class="n">returnIds</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+</span><span id="L-13"><a href="#L-13"><span class="linenos">13</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameters</span><span class="p">,</span> <span class="n">returnIds</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 </span><span id="L-14"><a href="#L-14"><span class="linenos">14</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Poll for coverage information given a patients information</span>
 </span><span id="L-15"><a href="#L-15"><span class="linenos">15</span></a>
 </span><span id="L-16"><a href="#L-16"><span class="linenos">16</span></a><span class="sd">        Args:</span>
-</span><span id="L-17"><a href="#L-17"><span class="linenos">17</span></a><span class="sd">            returnIds (bool): if returning a list of the coverage search Ids (True)</span>
-</span><span id="L-18"><a href="#L-18"><span class="linenos">18</span></a><span class="sd">            or the coverage details (false). Defaults to False. </span>
+</span><span id="L-17"><a href="#L-17"><span class="linenos">17</span></a><span class="sd">            returnIds (bool): if returning a list of the coverage search </span>
+</span><span id="L-18"><a href="#L-18"><span class="linenos">18</span></a><span class="sd">                Ids (True) or the coverage details (false). Defaults to False. </span>
 </span><span id="L-19"><a href="#L-19"><span class="linenos">19</span></a>
-</span><span id="L-20"><a href="#L-20"><span class="linenos">20</span></a><span class="sd">            _patient (json | string | dict), optional: json or filename for patient if not using </span>
-</span><span id="L-21"><a href="#L-21"><span class="linenos">21</span></a><span class="sd">            default set for class. </span>
-</span><span id="L-22"><a href="#L-22"><span class="linenos">22</span></a>
+</span><span id="L-20"><a href="#L-20"><span class="linenos">20</span></a><span class="sd">            parameters (json | dict | filename): the search parameters </span>
+</span><span id="L-21"><a href="#L-21"><span class="linenos">21</span></a><span class="sd">                (patient member id, dob, state, etc). </span>
+</span><span id="L-22"><a href="#L-22"><span class="linenos">22</span></a><span class="sd">            </span>
 </span><span id="L-23"><a href="#L-23"><span class="linenos">23</span></a><span class="sd">        Returns:</span>
-</span><span id="L-24"><a href="#L-24"><span class="linenos">24</span></a><span class="sd">            list[str] | json: returns list of ids (strings) or a list of coverages in json format. </span>
-</span><span id="L-25"><a href="#L-25"><span class="linenos">25</span></a>
-</span><span id="L-26"><a href="#L-26"><span class="linenos">26</span></a><span class="sd">        Raises:</span>
-</span><span id="L-27"><a href="#L-27"><span class="linenos">27</span></a><span class="sd">            Exception: KeyError if missing required arg for polling </span>
-</span><span id="L-28"><a href="#L-28"><span class="linenos">28</span></a><span class="sd">            config (payer.id and requestTypeCode)</span>
-</span><span id="L-29"><a href="#L-29"><span class="linenos">29</span></a><span class="sd">            Exception: If response from coverage API failed</span>
-</span><span id="L-30"><a href="#L-30"><span class="linenos">30</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-31"><a href="#L-31"><span class="linenos">31</span></a>        <span class="n">parameters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parseInfo</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
-</span><span id="L-32"><a href="#L-32"><span class="linenos">32</span></a>        <span class="n">parameters</span><span class="o">=</span><span class="p">{</span><span class="n">x</span><span class="p">:</span><span class="n">parameters</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">parameters</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="n">parameters</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">}</span>
-</span><span id="L-33"><a href="#L-33"><span class="linenos">33</span></a>
-</span><span id="L-34"><a href="#L-34"><span class="linenos">34</span></a>        <span class="c1"># TODO: uncomment</span>
-</span><span id="L-35"><a href="#L-35"><span class="linenos">35</span></a>        <span class="c1"># try:</span>
-</span><span id="L-36"><a href="#L-36"><span class="linenos">36</span></a>        <span class="c1">#     self.checkRequiredArgs(parameters, parameters[&#39;payer&#39;][&#39;id&#39;], 207)</span>
-</span><span id="L-37"><a href="#L-37"><span class="linenos">37</span></a>        <span class="c1"># except KeyError as err:</span>
-</span><span id="L-38"><a href="#L-38"><span class="linenos">38</span></a>        <span class="c1">#     raise Exception(&#39;Missing key search parameter(payer id or request type code)&#39;) from err</span>
-</span><span id="L-39"><a href="#L-39"><span class="linenos">39</span></a>
-</span><span id="L-40"><a href="#L-40"><span class="linenos">40</span></a>        <span class="c1"># TODO: uncomment</span>
-</span><span id="L-41"><a href="#L-41"><span class="linenos">41</span></a>        <span class="k">try</span><span class="p">:</span>
-</span><span id="L-42"><a href="#L-42"><span class="linenos">42</span></a>            <span class="n">coveragePoll</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
-</span><span id="L-43"><a href="#L-43"><span class="linenos">43</span></a>                <span class="n">url</span><span class="o">=</span><span class="s1">&#39;https://api.availity.com/availity/v1/coverages&#39;</span><span class="p">,</span>
-</span><span id="L-44"><a href="#L-44"><span class="linenos">44</span></a>                <span class="n">headers</span><span class="o">=</span><span class="p">{</span>
-</span><span id="L-45"><a href="#L-45"><span class="linenos">45</span></a>                    <span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">authentication</span><span class="p">,</span>
-</span><span id="L-46"><a href="#L-46"><span class="linenos">46</span></a>                    <span class="s1">&#39;Content-Type&#39;</span><span class="p">:</span> <span class="s1">&#39;application/x-www-form-urlencoded&#39;</span>
-</span><span id="L-47"><a href="#L-47"><span class="linenos">47</span></a>                <span class="p">},</span>
-</span><span id="L-48"><a href="#L-48"><span class="linenos">48</span></a>                <span class="n">data</span><span class="o">=</span><span class="n">parameters</span>
-</span><span id="L-49"><a href="#L-49"><span class="linenos">49</span></a>            <span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
-</span><span id="L-50"><a href="#L-50"><span class="linenos">50</span></a>            <span class="n">coverages</span> <span class="o">=</span> <span class="n">coveragePoll</span><span class="p">[</span><span class="s1">&#39;coverages&#39;</span><span class="p">]</span>
-</span><span id="L-51"><a href="#L-51"><span class="linenos">51</span></a>        <span class="k">except</span><span class="p">:</span>
-</span><span id="L-52"><a href="#L-52"><span class="linenos">52</span></a>            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error polling coverage information</span><span class="se">\n</span><span class="s2">&quot;</span>
-</span><span id="L-53"><a href="#L-53"><span class="linenos">53</span></a>                  <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">coveragePoll</span><span class="p">[</span><span class="s1">&#39;error&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2"> coveragePoll[&#39;error_description&#39;]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</span><span id="L-54"><a href="#L-54"><span class="linenos">54</span></a>
-</span><span id="L-55"><a href="#L-55"><span class="linenos">55</span></a>        <span class="n">ids</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">coverages</span><span class="p">)</span>
-</span><span id="L-56"><a href="#L-56"><span class="linenos">56</span></a>        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">coverages</span><span class="p">)):</span>
-</span><span id="L-57"><a href="#L-57"><span class="linenos">57</span></a>            <span class="n">ids</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">coverages</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
-</span><span id="L-58"><a href="#L-58"><span class="linenos">58</span></a>
-</span><span id="L-59"><a href="#L-59"><span class="linenos">59</span></a>        <span class="k">if</span> <span class="n">returnIds</span><span class="p">:</span> 
-</span><span id="L-60"><a href="#L-60"><span class="linenos">60</span></a>            <span class="k">return</span> <span class="n">ids</span>
-</span><span id="L-61"><a href="#L-61"><span class="linenos">61</span></a>        
-</span><span id="L-62"><a href="#L-62"><span class="linenos">62</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">getCoveragesSearch</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span>
-</span><span id="L-63"><a href="#L-63"><span class="linenos">63</span></a>
-</span><span id="L-64"><a href="#L-64"><span class="linenos">64</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">getCoveragesSearch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ids</span><span class="p">):</span>
-</span><span id="L-65"><a href="#L-65"><span class="linenos">65</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets coverage details based on search Ids (from coveragePolling())</span>
-</span><span id="L-66"><a href="#L-66"><span class="linenos">66</span></a>
-</span><span id="L-67"><a href="#L-67"><span class="linenos">67</span></a><span class="sd">        Args:</span>
-</span><span id="L-68"><a href="#L-68"><span class="linenos">68</span></a><span class="sd">            ids (list[str])</span>
-</span><span id="L-69"><a href="#L-69"><span class="linenos">69</span></a>
-</span><span id="L-70"><a href="#L-70"><span class="linenos">70</span></a><span class="sd">        Returns:</span>
-</span><span id="L-71"><a href="#L-71"><span class="linenos">71</span></a><span class="sd">            json: format &quot;coverages&quot;:[list of coverage details per ids]</span>
-</span><span id="L-72"><a href="#L-72"><span class="linenos">72</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-73"><a href="#L-73"><span class="linenos">73</span></a>
-</span><span id="L-74"><a href="#L-74"><span class="linenos">74</span></a>        <span class="n">results</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;coverages&#39;</span><span class="p">:</span> <span class="p">[]}</span>
-</span><span id="L-75"><a href="#L-75"><span class="linenos">75</span></a>        <span class="k">for</span> <span class="nb">id</span> <span class="ow">in</span> <span class="n">ids</span><span class="p">:</span>
-</span><span id="L-76"><a href="#L-76"><span class="linenos">76</span></a>            <span class="n">searchPoll</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-</span><span id="L-77"><a href="#L-77"><span class="linenos">77</span></a>                <span class="n">url</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;https://api.availity.com/availity/v1/coverages/</span><span class="si">{</span><span class="nb">id</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
-</span><span id="L-78"><a href="#L-78"><span class="linenos">78</span></a>                <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">authentication</span><span class="p">},</span>
-</span><span id="L-79"><a href="#L-79"><span class="linenos">79</span></a>            <span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
-</span><span id="L-80"><a href="#L-80"><span class="linenos">80</span></a>            <span class="n">results</span><span class="p">[</span><span class="s1">&#39;coverages&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">searchPoll</span><span class="p">)</span>
-</span><span id="L-81"><a href="#L-81"><span class="linenos">81</span></a>
-</span><span id="L-82"><a href="#L-82"><span class="linenos">82</span></a>        <span class="k">return</span> <span class="n">results</span>
+</span><span id="L-24"><a href="#L-24"><span class="linenos">24</span></a><span class="sd">            list[str] | json: returns list of ids (strings) or a list of </span>
+</span><span id="L-25"><a href="#L-25"><span class="linenos">25</span></a><span class="sd">                coverages in json format. </span>
+</span><span id="L-26"><a href="#L-26"><span class="linenos">26</span></a>
+</span><span id="L-27"><a href="#L-27"><span class="linenos">27</span></a><span class="sd">        Raises:</span>
+</span><span id="L-28"><a href="#L-28"><span class="linenos">28</span></a><span class="sd">            Exception: KeyError if missing required arg for polling</span>
+</span><span id="L-29"><a href="#L-29"><span class="linenos">29</span></a><span class="sd">                config (payer.id and requestTypeCode)</span>
+</span><span id="L-30"><a href="#L-30"><span class="linenos">30</span></a><span class="sd">            Exception: If response from coverage API failed</span>
+</span><span id="L-31"><a href="#L-31"><span class="linenos">31</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-32"><a href="#L-32"><span class="linenos">32</span></a>        <span class="n">parameters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parseInfo</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
+</span><span id="L-33"><a href="#L-33"><span class="linenos">33</span></a>        <span class="n">parameters</span><span class="o">=</span><span class="p">{</span><span class="n">x</span><span class="p">:</span><span class="n">parameters</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">parameters</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="n">parameters</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">}</span>
+</span><span id="L-34"><a href="#L-34"><span class="linenos">34</span></a>
+</span><span id="L-35"><a href="#L-35"><span class="linenos">35</span></a>        <span class="c1"># Parameter cleaning, not implemented right now because of lack of ability to test.</span>
+</span><span id="L-36"><a href="#L-36"><span class="linenos">36</span></a>
+</span><span id="L-37"><a href="#L-37"><span class="linenos">37</span></a>        <span class="c1"># try:</span>
+</span><span id="L-38"><a href="#L-38"><span class="linenos">38</span></a>        <span class="c1">#     self.checkRequiredArgs(parameters, parameters[&#39;payer&#39;][&#39;id&#39;], 207)</span>
+</span><span id="L-39"><a href="#L-39"><span class="linenos">39</span></a>        <span class="c1"># except KeyError as err:</span>
+</span><span id="L-40"><a href="#L-40"><span class="linenos">40</span></a>        <span class="c1">#     raise Exception(&#39;Missing key search parameter(payer id or request type code)&#39;) from err</span>
+</span><span id="L-41"><a href="#L-41"><span class="linenos">41</span></a>
+</span><span id="L-42"><a href="#L-42"><span class="linenos">42</span></a>        <span class="k">try</span><span class="p">:</span>
+</span><span id="L-43"><a href="#L-43"><span class="linenos">43</span></a>            <span class="n">coveragePoll</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+</span><span id="L-44"><a href="#L-44"><span class="linenos">44</span></a>                <span class="n">url</span><span class="o">=</span><span class="s1">&#39;https://api.availity.com/availity/v1/coverages&#39;</span><span class="p">,</span>
+</span><span id="L-45"><a href="#L-45"><span class="linenos">45</span></a>                <span class="n">headers</span><span class="o">=</span><span class="p">{</span>
+</span><span id="L-46"><a href="#L-46"><span class="linenos">46</span></a>                    <span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">authentication</span><span class="p">,</span>
+</span><span id="L-47"><a href="#L-47"><span class="linenos">47</span></a>                    <span class="s1">&#39;Content-Type&#39;</span><span class="p">:</span> <span class="s1">&#39;application/x-www-form-urlencoded&#39;</span>
+</span><span id="L-48"><a href="#L-48"><span class="linenos">48</span></a>                <span class="p">},</span>
+</span><span id="L-49"><a href="#L-49"><span class="linenos">49</span></a>                <span class="n">data</span><span class="o">=</span><span class="n">parameters</span>
+</span><span id="L-50"><a href="#L-50"><span class="linenos">50</span></a>            <span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+</span><span id="L-51"><a href="#L-51"><span class="linenos">51</span></a>            <span class="n">coverages</span> <span class="o">=</span> <span class="n">coveragePoll</span><span class="p">[</span><span class="s1">&#39;coverages&#39;</span><span class="p">]</span>
+</span><span id="L-52"><a href="#L-52"><span class="linenos">52</span></a>        <span class="k">except</span><span class="p">:</span>
+</span><span id="L-53"><a href="#L-53"><span class="linenos">53</span></a>            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error polling coverage information</span><span class="se">\n</span><span class="s2">&quot;</span>
+</span><span id="L-54"><a href="#L-54"><span class="linenos">54</span></a>                  <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">coveragePoll</span><span class="p">[</span><span class="s1">&#39;error&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2"> coveragePoll[&#39;error_description&#39;]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="L-55"><a href="#L-55"><span class="linenos">55</span></a>
+</span><span id="L-56"><a href="#L-56"><span class="linenos">56</span></a>        <span class="n">ids</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">coverages</span><span class="p">)</span>
+</span><span id="L-57"><a href="#L-57"><span class="linenos">57</span></a>        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">coverages</span><span class="p">)):</span>
+</span><span id="L-58"><a href="#L-58"><span class="linenos">58</span></a>            <span class="n">ids</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">coverages</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
+</span><span id="L-59"><a href="#L-59"><span class="linenos">59</span></a>
+</span><span id="L-60"><a href="#L-60"><span class="linenos">60</span></a>        <span class="k">if</span> <span class="n">returnIds</span><span class="p">:</span> 
+</span><span id="L-61"><a href="#L-61"><span class="linenos">61</span></a>            <span class="k">return</span> <span class="n">ids</span>
+</span><span id="L-62"><a href="#L-62"><span class="linenos">62</span></a>        
+</span><span id="L-63"><a href="#L-63"><span class="linenos">63</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">getCoveragesSearch</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span>
+</span><span id="L-64"><a href="#L-64"><span class="linenos">64</span></a>
+</span><span id="L-65"><a href="#L-65"><span class="linenos">65</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">getById</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ids</span><span class="p">):</span>
+</span><span id="L-66"><a href="#L-66"><span class="linenos">66</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets coverage details based on search Ids (from self.get())</span>
+</span><span id="L-67"><a href="#L-67"><span class="linenos">67</span></a>
+</span><span id="L-68"><a href="#L-68"><span class="linenos">68</span></a><span class="sd">        Args:</span>
+</span><span id="L-69"><a href="#L-69"><span class="linenos">69</span></a><span class="sd">            ids (list[str]): list of search id&#39;s as returned from self.get()</span>
+</span><span id="L-70"><a href="#L-70"><span class="linenos">70</span></a>
+</span><span id="L-71"><a href="#L-71"><span class="linenos">71</span></a><span class="sd">        Returns:</span>
+</span><span id="L-72"><a href="#L-72"><span class="linenos">72</span></a><span class="sd">            json: format &quot;coverages&quot;:[list of coverage details per ids]</span>
+</span><span id="L-73"><a href="#L-73"><span class="linenos">73</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-74"><a href="#L-74"><span class="linenos">74</span></a>
+</span><span id="L-75"><a href="#L-75"><span class="linenos">75</span></a>        <span class="n">results</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;coverages&#39;</span><span class="p">:</span> <span class="p">[]}</span>
+</span><span id="L-76"><a href="#L-76"><span class="linenos">76</span></a>        <span class="k">for</span> <span class="nb">id</span> <span class="ow">in</span> <span class="n">ids</span><span class="p">:</span>
+</span><span id="L-77"><a href="#L-77"><span class="linenos">77</span></a>            <span class="n">searchPoll</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+</span><span id="L-78"><a href="#L-78"><span class="linenos">78</span></a>                <span class="n">url</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;https://api.availity.com/availity/v1/coverages/</span><span class="si">{</span><span class="nb">id</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+</span><span id="L-79"><a href="#L-79"><span class="linenos">79</span></a>                <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">authentication</span><span class="p">},</span>
+</span><span id="L-80"><a href="#L-80"><span class="linenos">80</span></a>            <span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+</span><span id="L-81"><a href="#L-81"><span class="linenos">81</span></a>            <span class="n">results</span><span class="p">[</span><span class="s1">&#39;coverages&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">searchPoll</span><span class="p">)</span>
+</span><span id="L-82"><a href="#L-82"><span class="linenos">82</span></a>
+</span><span id="L-83"><a href="#L-83"><span class="linenos">83</span></a>        <span class="k">return</span> <span class="n">results</span>
 </span></pre></div>
 
 
@@ -171,76 +172,77 @@
 </span><span id="Coverages-11"><a href="#Coverages-11"><span class="linenos">11</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">secret</span><span class="p">):</span>
 </span><span id="Coverages-12"><a href="#Coverages-12"><span class="linenos">12</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">secret</span><span class="p">)</span>
 </span><span id="Coverages-13"><a href="#Coverages-13"><span class="linenos">13</span></a>
-</span><span id="Coverages-14"><a href="#Coverages-14"><span class="linenos">14</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="n">json</span><span class="p">,</span> <span class="n">returnIds</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+</span><span id="Coverages-14"><a href="#Coverages-14"><span class="linenos">14</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameters</span><span class="p">,</span> <span class="n">returnIds</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 </span><span id="Coverages-15"><a href="#Coverages-15"><span class="linenos">15</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Poll for coverage information given a patients information</span>
 </span><span id="Coverages-16"><a href="#Coverages-16"><span class="linenos">16</span></a>
 </span><span id="Coverages-17"><a href="#Coverages-17"><span class="linenos">17</span></a><span class="sd">        Args:</span>
-</span><span id="Coverages-18"><a href="#Coverages-18"><span class="linenos">18</span></a><span class="sd">            returnIds (bool): if returning a list of the coverage search Ids (True)</span>
-</span><span id="Coverages-19"><a href="#Coverages-19"><span class="linenos">19</span></a><span class="sd">            or the coverage details (false). Defaults to False. </span>
+</span><span id="Coverages-18"><a href="#Coverages-18"><span class="linenos">18</span></a><span class="sd">            returnIds (bool): if returning a list of the coverage search </span>
+</span><span id="Coverages-19"><a href="#Coverages-19"><span class="linenos">19</span></a><span class="sd">                Ids (True) or the coverage details (false). Defaults to False. </span>
 </span><span id="Coverages-20"><a href="#Coverages-20"><span class="linenos">20</span></a>
-</span><span id="Coverages-21"><a href="#Coverages-21"><span class="linenos">21</span></a><span class="sd">            _patient (json | string | dict), optional: json or filename for patient if not using </span>
-</span><span id="Coverages-22"><a href="#Coverages-22"><span class="linenos">22</span></a><span class="sd">            default set for class. </span>
-</span><span id="Coverages-23"><a href="#Coverages-23"><span class="linenos">23</span></a>
+</span><span id="Coverages-21"><a href="#Coverages-21"><span class="linenos">21</span></a><span class="sd">            parameters (json | dict | filename): the search parameters </span>
+</span><span id="Coverages-22"><a href="#Coverages-22"><span class="linenos">22</span></a><span class="sd">                (patient member id, dob, state, etc). </span>
+</span><span id="Coverages-23"><a href="#Coverages-23"><span class="linenos">23</span></a><span class="sd">            </span>
 </span><span id="Coverages-24"><a href="#Coverages-24"><span class="linenos">24</span></a><span class="sd">        Returns:</span>
-</span><span id="Coverages-25"><a href="#Coverages-25"><span class="linenos">25</span></a><span class="sd">            list[str] | json: returns list of ids (strings) or a list of coverages in json format. </span>
-</span><span id="Coverages-26"><a href="#Coverages-26"><span class="linenos">26</span></a>
-</span><span id="Coverages-27"><a href="#Coverages-27"><span class="linenos">27</span></a><span class="sd">        Raises:</span>
-</span><span id="Coverages-28"><a href="#Coverages-28"><span class="linenos">28</span></a><span class="sd">            Exception: KeyError if missing required arg for polling </span>
-</span><span id="Coverages-29"><a href="#Coverages-29"><span class="linenos">29</span></a><span class="sd">            config (payer.id and requestTypeCode)</span>
-</span><span id="Coverages-30"><a href="#Coverages-30"><span class="linenos">30</span></a><span class="sd">            Exception: If response from coverage API failed</span>
-</span><span id="Coverages-31"><a href="#Coverages-31"><span class="linenos">31</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="Coverages-32"><a href="#Coverages-32"><span class="linenos">32</span></a>        <span class="n">parameters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parseInfo</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
-</span><span id="Coverages-33"><a href="#Coverages-33"><span class="linenos">33</span></a>        <span class="n">parameters</span><span class="o">=</span><span class="p">{</span><span class="n">x</span><span class="p">:</span><span class="n">parameters</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">parameters</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="n">parameters</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">}</span>
-</span><span id="Coverages-34"><a href="#Coverages-34"><span class="linenos">34</span></a>
-</span><span id="Coverages-35"><a href="#Coverages-35"><span class="linenos">35</span></a>        <span class="c1"># TODO: uncomment</span>
-</span><span id="Coverages-36"><a href="#Coverages-36"><span class="linenos">36</span></a>        <span class="c1"># try:</span>
-</span><span id="Coverages-37"><a href="#Coverages-37"><span class="linenos">37</span></a>        <span class="c1">#     self.checkRequiredArgs(parameters, parameters[&#39;payer&#39;][&#39;id&#39;], 207)</span>
-</span><span id="Coverages-38"><a href="#Coverages-38"><span class="linenos">38</span></a>        <span class="c1"># except KeyError as err:</span>
-</span><span id="Coverages-39"><a href="#Coverages-39"><span class="linenos">39</span></a>        <span class="c1">#     raise Exception(&#39;Missing key search parameter(payer id or request type code)&#39;) from err</span>
-</span><span id="Coverages-40"><a href="#Coverages-40"><span class="linenos">40</span></a>
-</span><span id="Coverages-41"><a href="#Coverages-41"><span class="linenos">41</span></a>        <span class="c1"># TODO: uncomment</span>
-</span><span id="Coverages-42"><a href="#Coverages-42"><span class="linenos">42</span></a>        <span class="k">try</span><span class="p">:</span>
-</span><span id="Coverages-43"><a href="#Coverages-43"><span class="linenos">43</span></a>            <span class="n">coveragePoll</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
-</span><span id="Coverages-44"><a href="#Coverages-44"><span class="linenos">44</span></a>                <span class="n">url</span><span class="o">=</span><span class="s1">&#39;https://api.availity.com/availity/v1/coverages&#39;</span><span class="p">,</span>
-</span><span id="Coverages-45"><a href="#Coverages-45"><span class="linenos">45</span></a>                <span class="n">headers</span><span class="o">=</span><span class="p">{</span>
-</span><span id="Coverages-46"><a href="#Coverages-46"><span class="linenos">46</span></a>                    <span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">authentication</span><span class="p">,</span>
-</span><span id="Coverages-47"><a href="#Coverages-47"><span class="linenos">47</span></a>                    <span class="s1">&#39;Content-Type&#39;</span><span class="p">:</span> <span class="s1">&#39;application/x-www-form-urlencoded&#39;</span>
-</span><span id="Coverages-48"><a href="#Coverages-48"><span class="linenos">48</span></a>                <span class="p">},</span>
-</span><span id="Coverages-49"><a href="#Coverages-49"><span class="linenos">49</span></a>                <span class="n">data</span><span class="o">=</span><span class="n">parameters</span>
-</span><span id="Coverages-50"><a href="#Coverages-50"><span class="linenos">50</span></a>            <span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
-</span><span id="Coverages-51"><a href="#Coverages-51"><span class="linenos">51</span></a>            <span class="n">coverages</span> <span class="o">=</span> <span class="n">coveragePoll</span><span class="p">[</span><span class="s1">&#39;coverages&#39;</span><span class="p">]</span>
-</span><span id="Coverages-52"><a href="#Coverages-52"><span class="linenos">52</span></a>        <span class="k">except</span><span class="p">:</span>
-</span><span id="Coverages-53"><a href="#Coverages-53"><span class="linenos">53</span></a>            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error polling coverage information</span><span class="se">\n</span><span class="s2">&quot;</span>
-</span><span id="Coverages-54"><a href="#Coverages-54"><span class="linenos">54</span></a>                  <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">coveragePoll</span><span class="p">[</span><span class="s1">&#39;error&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2"> coveragePoll[&#39;error_description&#39;]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</span><span id="Coverages-55"><a href="#Coverages-55"><span class="linenos">55</span></a>
-</span><span id="Coverages-56"><a href="#Coverages-56"><span class="linenos">56</span></a>        <span class="n">ids</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">coverages</span><span class="p">)</span>
-</span><span id="Coverages-57"><a href="#Coverages-57"><span class="linenos">57</span></a>        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">coverages</span><span class="p">)):</span>
-</span><span id="Coverages-58"><a href="#Coverages-58"><span class="linenos">58</span></a>            <span class="n">ids</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">coverages</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
-</span><span id="Coverages-59"><a href="#Coverages-59"><span class="linenos">59</span></a>
-</span><span id="Coverages-60"><a href="#Coverages-60"><span class="linenos">60</span></a>        <span class="k">if</span> <span class="n">returnIds</span><span class="p">:</span> 
-</span><span id="Coverages-61"><a href="#Coverages-61"><span class="linenos">61</span></a>            <span class="k">return</span> <span class="n">ids</span>
-</span><span id="Coverages-62"><a href="#Coverages-62"><span class="linenos">62</span></a>        
-</span><span id="Coverages-63"><a href="#Coverages-63"><span class="linenos">63</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">getCoveragesSearch</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span>
-</span><span id="Coverages-64"><a href="#Coverages-64"><span class="linenos">64</span></a>
-</span><span id="Coverages-65"><a href="#Coverages-65"><span class="linenos">65</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">getCoveragesSearch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ids</span><span class="p">):</span>
-</span><span id="Coverages-66"><a href="#Coverages-66"><span class="linenos">66</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets coverage details based on search Ids (from coveragePolling())</span>
-</span><span id="Coverages-67"><a href="#Coverages-67"><span class="linenos">67</span></a>
-</span><span id="Coverages-68"><a href="#Coverages-68"><span class="linenos">68</span></a><span class="sd">        Args:</span>
-</span><span id="Coverages-69"><a href="#Coverages-69"><span class="linenos">69</span></a><span class="sd">            ids (list[str])</span>
-</span><span id="Coverages-70"><a href="#Coverages-70"><span class="linenos">70</span></a>
-</span><span id="Coverages-71"><a href="#Coverages-71"><span class="linenos">71</span></a><span class="sd">        Returns:</span>
-</span><span id="Coverages-72"><a href="#Coverages-72"><span class="linenos">72</span></a><span class="sd">            json: format &quot;coverages&quot;:[list of coverage details per ids]</span>
-</span><span id="Coverages-73"><a href="#Coverages-73"><span class="linenos">73</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="Coverages-74"><a href="#Coverages-74"><span class="linenos">74</span></a>
-</span><span id="Coverages-75"><a href="#Coverages-75"><span class="linenos">75</span></a>        <span class="n">results</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;coverages&#39;</span><span class="p">:</span> <span class="p">[]}</span>
-</span><span id="Coverages-76"><a href="#Coverages-76"><span class="linenos">76</span></a>        <span class="k">for</span> <span class="nb">id</span> <span class="ow">in</span> <span class="n">ids</span><span class="p">:</span>
-</span><span id="Coverages-77"><a href="#Coverages-77"><span class="linenos">77</span></a>            <span class="n">searchPoll</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-</span><span id="Coverages-78"><a href="#Coverages-78"><span class="linenos">78</span></a>                <span class="n">url</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;https://api.availity.com/availity/v1/coverages/</span><span class="si">{</span><span class="nb">id</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
-</span><span id="Coverages-79"><a href="#Coverages-79"><span class="linenos">79</span></a>                <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">authentication</span><span class="p">},</span>
-</span><span id="Coverages-80"><a href="#Coverages-80"><span class="linenos">80</span></a>            <span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
-</span><span id="Coverages-81"><a href="#Coverages-81"><span class="linenos">81</span></a>            <span class="n">results</span><span class="p">[</span><span class="s1">&#39;coverages&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">searchPoll</span><span class="p">)</span>
-</span><span id="Coverages-82"><a href="#Coverages-82"><span class="linenos">82</span></a>
-</span><span id="Coverages-83"><a href="#Coverages-83"><span class="linenos">83</span></a>        <span class="k">return</span> <span class="n">results</span>
+</span><span id="Coverages-25"><a href="#Coverages-25"><span class="linenos">25</span></a><span class="sd">            list[str] | json: returns list of ids (strings) or a list of </span>
+</span><span id="Coverages-26"><a href="#Coverages-26"><span class="linenos">26</span></a><span class="sd">                coverages in json format. </span>
+</span><span id="Coverages-27"><a href="#Coverages-27"><span class="linenos">27</span></a>
+</span><span id="Coverages-28"><a href="#Coverages-28"><span class="linenos">28</span></a><span class="sd">        Raises:</span>
+</span><span id="Coverages-29"><a href="#Coverages-29"><span class="linenos">29</span></a><span class="sd">            Exception: KeyError if missing required arg for polling</span>
+</span><span id="Coverages-30"><a href="#Coverages-30"><span class="linenos">30</span></a><span class="sd">                config (payer.id and requestTypeCode)</span>
+</span><span id="Coverages-31"><a href="#Coverages-31"><span class="linenos">31</span></a><span class="sd">            Exception: If response from coverage API failed</span>
+</span><span id="Coverages-32"><a href="#Coverages-32"><span class="linenos">32</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Coverages-33"><a href="#Coverages-33"><span class="linenos">33</span></a>        <span class="n">parameters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parseInfo</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
+</span><span id="Coverages-34"><a href="#Coverages-34"><span class="linenos">34</span></a>        <span class="n">parameters</span><span class="o">=</span><span class="p">{</span><span class="n">x</span><span class="p">:</span><span class="n">parameters</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">parameters</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="n">parameters</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">}</span>
+</span><span id="Coverages-35"><a href="#Coverages-35"><span class="linenos">35</span></a>
+</span><span id="Coverages-36"><a href="#Coverages-36"><span class="linenos">36</span></a>        <span class="c1"># Parameter cleaning, not implemented right now because of lack of ability to test.</span>
+</span><span id="Coverages-37"><a href="#Coverages-37"><span class="linenos">37</span></a>
+</span><span id="Coverages-38"><a href="#Coverages-38"><span class="linenos">38</span></a>        <span class="c1"># try:</span>
+</span><span id="Coverages-39"><a href="#Coverages-39"><span class="linenos">39</span></a>        <span class="c1">#     self.checkRequiredArgs(parameters, parameters[&#39;payer&#39;][&#39;id&#39;], 207)</span>
+</span><span id="Coverages-40"><a href="#Coverages-40"><span class="linenos">40</span></a>        <span class="c1"># except KeyError as err:</span>
+</span><span id="Coverages-41"><a href="#Coverages-41"><span class="linenos">41</span></a>        <span class="c1">#     raise Exception(&#39;Missing key search parameter(payer id or request type code)&#39;) from err</span>
+</span><span id="Coverages-42"><a href="#Coverages-42"><span class="linenos">42</span></a>
+</span><span id="Coverages-43"><a href="#Coverages-43"><span class="linenos">43</span></a>        <span class="k">try</span><span class="p">:</span>
+</span><span id="Coverages-44"><a href="#Coverages-44"><span class="linenos">44</span></a>            <span class="n">coveragePoll</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+</span><span id="Coverages-45"><a href="#Coverages-45"><span class="linenos">45</span></a>                <span class="n">url</span><span class="o">=</span><span class="s1">&#39;https://api.availity.com/availity/v1/coverages&#39;</span><span class="p">,</span>
+</span><span id="Coverages-46"><a href="#Coverages-46"><span class="linenos">46</span></a>                <span class="n">headers</span><span class="o">=</span><span class="p">{</span>
+</span><span id="Coverages-47"><a href="#Coverages-47"><span class="linenos">47</span></a>                    <span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">authentication</span><span class="p">,</span>
+</span><span id="Coverages-48"><a href="#Coverages-48"><span class="linenos">48</span></a>                    <span class="s1">&#39;Content-Type&#39;</span><span class="p">:</span> <span class="s1">&#39;application/x-www-form-urlencoded&#39;</span>
+</span><span id="Coverages-49"><a href="#Coverages-49"><span class="linenos">49</span></a>                <span class="p">},</span>
+</span><span id="Coverages-50"><a href="#Coverages-50"><span class="linenos">50</span></a>                <span class="n">data</span><span class="o">=</span><span class="n">parameters</span>
+</span><span id="Coverages-51"><a href="#Coverages-51"><span class="linenos">51</span></a>            <span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+</span><span id="Coverages-52"><a href="#Coverages-52"><span class="linenos">52</span></a>            <span class="n">coverages</span> <span class="o">=</span> <span class="n">coveragePoll</span><span class="p">[</span><span class="s1">&#39;coverages&#39;</span><span class="p">]</span>
+</span><span id="Coverages-53"><a href="#Coverages-53"><span class="linenos">53</span></a>        <span class="k">except</span><span class="p">:</span>
+</span><span id="Coverages-54"><a href="#Coverages-54"><span class="linenos">54</span></a>            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error polling coverage information</span><span class="se">\n</span><span class="s2">&quot;</span>
+</span><span id="Coverages-55"><a href="#Coverages-55"><span class="linenos">55</span></a>                  <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">coveragePoll</span><span class="p">[</span><span class="s1">&#39;error&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2"> coveragePoll[&#39;error_description&#39;]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="Coverages-56"><a href="#Coverages-56"><span class="linenos">56</span></a>
+</span><span id="Coverages-57"><a href="#Coverages-57"><span class="linenos">57</span></a>        <span class="n">ids</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">coverages</span><span class="p">)</span>
+</span><span id="Coverages-58"><a href="#Coverages-58"><span class="linenos">58</span></a>        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">coverages</span><span class="p">)):</span>
+</span><span id="Coverages-59"><a href="#Coverages-59"><span class="linenos">59</span></a>            <span class="n">ids</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">coverages</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
+</span><span id="Coverages-60"><a href="#Coverages-60"><span class="linenos">60</span></a>
+</span><span id="Coverages-61"><a href="#Coverages-61"><span class="linenos">61</span></a>        <span class="k">if</span> <span class="n">returnIds</span><span class="p">:</span> 
+</span><span id="Coverages-62"><a href="#Coverages-62"><span class="linenos">62</span></a>            <span class="k">return</span> <span class="n">ids</span>
+</span><span id="Coverages-63"><a href="#Coverages-63"><span class="linenos">63</span></a>        
+</span><span id="Coverages-64"><a href="#Coverages-64"><span class="linenos">64</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">getCoveragesSearch</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span>
+</span><span id="Coverages-65"><a href="#Coverages-65"><span class="linenos">65</span></a>
+</span><span id="Coverages-66"><a href="#Coverages-66"><span class="linenos">66</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">getById</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ids</span><span class="p">):</span>
+</span><span id="Coverages-67"><a href="#Coverages-67"><span class="linenos">67</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets coverage details based on search Ids (from self.get())</span>
+</span><span id="Coverages-68"><a href="#Coverages-68"><span class="linenos">68</span></a>
+</span><span id="Coverages-69"><a href="#Coverages-69"><span class="linenos">69</span></a><span class="sd">        Args:</span>
+</span><span id="Coverages-70"><a href="#Coverages-70"><span class="linenos">70</span></a><span class="sd">            ids (list[str]): list of search id&#39;s as returned from self.get()</span>
+</span><span id="Coverages-71"><a href="#Coverages-71"><span class="linenos">71</span></a>
+</span><span id="Coverages-72"><a href="#Coverages-72"><span class="linenos">72</span></a><span class="sd">        Returns:</span>
+</span><span id="Coverages-73"><a href="#Coverages-73"><span class="linenos">73</span></a><span class="sd">            json: format &quot;coverages&quot;:[list of coverage details per ids]</span>
+</span><span id="Coverages-74"><a href="#Coverages-74"><span class="linenos">74</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Coverages-75"><a href="#Coverages-75"><span class="linenos">75</span></a>
+</span><span id="Coverages-76"><a href="#Coverages-76"><span class="linenos">76</span></a>        <span class="n">results</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;coverages&#39;</span><span class="p">:</span> <span class="p">[]}</span>
+</span><span id="Coverages-77"><a href="#Coverages-77"><span class="linenos">77</span></a>        <span class="k">for</span> <span class="nb">id</span> <span class="ow">in</span> <span class="n">ids</span><span class="p">:</span>
+</span><span id="Coverages-78"><a href="#Coverages-78"><span class="linenos">78</span></a>            <span class="n">searchPoll</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+</span><span id="Coverages-79"><a href="#Coverages-79"><span class="linenos">79</span></a>                <span class="n">url</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;https://api.availity.com/availity/v1/coverages/</span><span class="si">{</span><span class="nb">id</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+</span><span id="Coverages-80"><a href="#Coverages-80"><span class="linenos">80</span></a>                <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">authentication</span><span class="p">},</span>
+</span><span id="Coverages-81"><a href="#Coverages-81"><span class="linenos">81</span></a>            <span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+</span><span id="Coverages-82"><a href="#Coverages-82"><span class="linenos">82</span></a>            <span class="n">results</span><span class="p">[</span><span class="s1">&#39;coverages&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">searchPoll</span><span class="p">)</span>
+</span><span id="Coverages-83"><a href="#Coverages-83"><span class="linenos">83</span></a>
+</span><span id="Coverages-84"><a href="#Coverages-84"><span class="linenos">84</span></a>        <span class="k">return</span> <span class="n">results</span>
 </span></pre></div>
 
 
@@ -272,62 +274,63 @@ Can be used to view plan benefits and current status.</p>
 <div class="attr function">
             
         <span class="def">def</span>
-        <span class="name">get</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="bp">self</span>,</span><span class="param">	<span class="n">parameters</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">module</span> <span class="s1">&#39;json&#39;</span> <span class="kn">from</span><span class="w"> </span><span class="s1">&#39;C:</span><span class="se">\\</span><span class="s1">Users</span><span class="se">\\</span><span class="s1">Lwilliams</span><span class="se">\\</span><span class="s1">AppData</span><span class="se">\\</span><span class="s1">Local</span><span class="se">\\</span><span class="s1">Python</span><span class="se">\\</span><span class="s1">pythoncore-3.14-64</span><span class="se">\\</span><span class="s1">Lib</span><span class="se">\\</span><span class="s1">json</span><span class="se">\\</span><span class="s1">__init__.py&#39;</span><span class="o">&gt;</span>,</span><span class="param">	<span class="n">returnIds</span><span class="o">=</span><span class="kc">False</span></span><span class="return-annotation">):</span></span>
+        <span class="name">get</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">parameters</span>, </span><span class="param"><span class="n">returnIds</span><span class="o">=</span><span class="kc">False</span></span><span class="return-annotation">):</span></span>
 
                 <label class="view-source-button" for="Coverages.get-view-source"><span>View Source</span></label>
 
     </div>
     <a class="headerlink" href="#Coverages.get"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="Coverages.get-14"><a href="#Coverages.get-14"><span class="linenos">14</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="n">json</span><span class="p">,</span> <span class="n">returnIds</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="Coverages.get-14"><a href="#Coverages.get-14"><span class="linenos">14</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameters</span><span class="p">,</span> <span class="n">returnIds</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 </span><span id="Coverages.get-15"><a href="#Coverages.get-15"><span class="linenos">15</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Poll for coverage information given a patients information</span>
 </span><span id="Coverages.get-16"><a href="#Coverages.get-16"><span class="linenos">16</span></a>
 </span><span id="Coverages.get-17"><a href="#Coverages.get-17"><span class="linenos">17</span></a><span class="sd">        Args:</span>
-</span><span id="Coverages.get-18"><a href="#Coverages.get-18"><span class="linenos">18</span></a><span class="sd">            returnIds (bool): if returning a list of the coverage search Ids (True)</span>
-</span><span id="Coverages.get-19"><a href="#Coverages.get-19"><span class="linenos">19</span></a><span class="sd">            or the coverage details (false). Defaults to False. </span>
+</span><span id="Coverages.get-18"><a href="#Coverages.get-18"><span class="linenos">18</span></a><span class="sd">            returnIds (bool): if returning a list of the coverage search </span>
+</span><span id="Coverages.get-19"><a href="#Coverages.get-19"><span class="linenos">19</span></a><span class="sd">                Ids (True) or the coverage details (false). Defaults to False. </span>
 </span><span id="Coverages.get-20"><a href="#Coverages.get-20"><span class="linenos">20</span></a>
-</span><span id="Coverages.get-21"><a href="#Coverages.get-21"><span class="linenos">21</span></a><span class="sd">            _patient (json | string | dict), optional: json or filename for patient if not using </span>
-</span><span id="Coverages.get-22"><a href="#Coverages.get-22"><span class="linenos">22</span></a><span class="sd">            default set for class. </span>
-</span><span id="Coverages.get-23"><a href="#Coverages.get-23"><span class="linenos">23</span></a>
+</span><span id="Coverages.get-21"><a href="#Coverages.get-21"><span class="linenos">21</span></a><span class="sd">            parameters (json | dict | filename): the search parameters </span>
+</span><span id="Coverages.get-22"><a href="#Coverages.get-22"><span class="linenos">22</span></a><span class="sd">                (patient member id, dob, state, etc). </span>
+</span><span id="Coverages.get-23"><a href="#Coverages.get-23"><span class="linenos">23</span></a><span class="sd">            </span>
 </span><span id="Coverages.get-24"><a href="#Coverages.get-24"><span class="linenos">24</span></a><span class="sd">        Returns:</span>
-</span><span id="Coverages.get-25"><a href="#Coverages.get-25"><span class="linenos">25</span></a><span class="sd">            list[str] | json: returns list of ids (strings) or a list of coverages in json format. </span>
-</span><span id="Coverages.get-26"><a href="#Coverages.get-26"><span class="linenos">26</span></a>
-</span><span id="Coverages.get-27"><a href="#Coverages.get-27"><span class="linenos">27</span></a><span class="sd">        Raises:</span>
-</span><span id="Coverages.get-28"><a href="#Coverages.get-28"><span class="linenos">28</span></a><span class="sd">            Exception: KeyError if missing required arg for polling </span>
-</span><span id="Coverages.get-29"><a href="#Coverages.get-29"><span class="linenos">29</span></a><span class="sd">            config (payer.id and requestTypeCode)</span>
-</span><span id="Coverages.get-30"><a href="#Coverages.get-30"><span class="linenos">30</span></a><span class="sd">            Exception: If response from coverage API failed</span>
-</span><span id="Coverages.get-31"><a href="#Coverages.get-31"><span class="linenos">31</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="Coverages.get-32"><a href="#Coverages.get-32"><span class="linenos">32</span></a>        <span class="n">parameters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parseInfo</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
-</span><span id="Coverages.get-33"><a href="#Coverages.get-33"><span class="linenos">33</span></a>        <span class="n">parameters</span><span class="o">=</span><span class="p">{</span><span class="n">x</span><span class="p">:</span><span class="n">parameters</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">parameters</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="n">parameters</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">}</span>
-</span><span id="Coverages.get-34"><a href="#Coverages.get-34"><span class="linenos">34</span></a>
-</span><span id="Coverages.get-35"><a href="#Coverages.get-35"><span class="linenos">35</span></a>        <span class="c1"># TODO: uncomment</span>
-</span><span id="Coverages.get-36"><a href="#Coverages.get-36"><span class="linenos">36</span></a>        <span class="c1"># try:</span>
-</span><span id="Coverages.get-37"><a href="#Coverages.get-37"><span class="linenos">37</span></a>        <span class="c1">#     self.checkRequiredArgs(parameters, parameters[&#39;payer&#39;][&#39;id&#39;], 207)</span>
-</span><span id="Coverages.get-38"><a href="#Coverages.get-38"><span class="linenos">38</span></a>        <span class="c1"># except KeyError as err:</span>
-</span><span id="Coverages.get-39"><a href="#Coverages.get-39"><span class="linenos">39</span></a>        <span class="c1">#     raise Exception(&#39;Missing key search parameter(payer id or request type code)&#39;) from err</span>
-</span><span id="Coverages.get-40"><a href="#Coverages.get-40"><span class="linenos">40</span></a>
-</span><span id="Coverages.get-41"><a href="#Coverages.get-41"><span class="linenos">41</span></a>        <span class="c1"># TODO: uncomment</span>
-</span><span id="Coverages.get-42"><a href="#Coverages.get-42"><span class="linenos">42</span></a>        <span class="k">try</span><span class="p">:</span>
-</span><span id="Coverages.get-43"><a href="#Coverages.get-43"><span class="linenos">43</span></a>            <span class="n">coveragePoll</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
-</span><span id="Coverages.get-44"><a href="#Coverages.get-44"><span class="linenos">44</span></a>                <span class="n">url</span><span class="o">=</span><span class="s1">&#39;https://api.availity.com/availity/v1/coverages&#39;</span><span class="p">,</span>
-</span><span id="Coverages.get-45"><a href="#Coverages.get-45"><span class="linenos">45</span></a>                <span class="n">headers</span><span class="o">=</span><span class="p">{</span>
-</span><span id="Coverages.get-46"><a href="#Coverages.get-46"><span class="linenos">46</span></a>                    <span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">authentication</span><span class="p">,</span>
-</span><span id="Coverages.get-47"><a href="#Coverages.get-47"><span class="linenos">47</span></a>                    <span class="s1">&#39;Content-Type&#39;</span><span class="p">:</span> <span class="s1">&#39;application/x-www-form-urlencoded&#39;</span>
-</span><span id="Coverages.get-48"><a href="#Coverages.get-48"><span class="linenos">48</span></a>                <span class="p">},</span>
-</span><span id="Coverages.get-49"><a href="#Coverages.get-49"><span class="linenos">49</span></a>                <span class="n">data</span><span class="o">=</span><span class="n">parameters</span>
-</span><span id="Coverages.get-50"><a href="#Coverages.get-50"><span class="linenos">50</span></a>            <span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
-</span><span id="Coverages.get-51"><a href="#Coverages.get-51"><span class="linenos">51</span></a>            <span class="n">coverages</span> <span class="o">=</span> <span class="n">coveragePoll</span><span class="p">[</span><span class="s1">&#39;coverages&#39;</span><span class="p">]</span>
-</span><span id="Coverages.get-52"><a href="#Coverages.get-52"><span class="linenos">52</span></a>        <span class="k">except</span><span class="p">:</span>
-</span><span id="Coverages.get-53"><a href="#Coverages.get-53"><span class="linenos">53</span></a>            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error polling coverage information</span><span class="se">\n</span><span class="s2">&quot;</span>
-</span><span id="Coverages.get-54"><a href="#Coverages.get-54"><span class="linenos">54</span></a>                  <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">coveragePoll</span><span class="p">[</span><span class="s1">&#39;error&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2"> coveragePoll[&#39;error_description&#39;]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</span><span id="Coverages.get-55"><a href="#Coverages.get-55"><span class="linenos">55</span></a>
-</span><span id="Coverages.get-56"><a href="#Coverages.get-56"><span class="linenos">56</span></a>        <span class="n">ids</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">coverages</span><span class="p">)</span>
-</span><span id="Coverages.get-57"><a href="#Coverages.get-57"><span class="linenos">57</span></a>        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">coverages</span><span class="p">)):</span>
-</span><span id="Coverages.get-58"><a href="#Coverages.get-58"><span class="linenos">58</span></a>            <span class="n">ids</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">coverages</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
-</span><span id="Coverages.get-59"><a href="#Coverages.get-59"><span class="linenos">59</span></a>
-</span><span id="Coverages.get-60"><a href="#Coverages.get-60"><span class="linenos">60</span></a>        <span class="k">if</span> <span class="n">returnIds</span><span class="p">:</span> 
-</span><span id="Coverages.get-61"><a href="#Coverages.get-61"><span class="linenos">61</span></a>            <span class="k">return</span> <span class="n">ids</span>
-</span><span id="Coverages.get-62"><a href="#Coverages.get-62"><span class="linenos">62</span></a>        
-</span><span id="Coverages.get-63"><a href="#Coverages.get-63"><span class="linenos">63</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">getCoveragesSearch</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span>
+</span><span id="Coverages.get-25"><a href="#Coverages.get-25"><span class="linenos">25</span></a><span class="sd">            list[str] | json: returns list of ids (strings) or a list of </span>
+</span><span id="Coverages.get-26"><a href="#Coverages.get-26"><span class="linenos">26</span></a><span class="sd">                coverages in json format. </span>
+</span><span id="Coverages.get-27"><a href="#Coverages.get-27"><span class="linenos">27</span></a>
+</span><span id="Coverages.get-28"><a href="#Coverages.get-28"><span class="linenos">28</span></a><span class="sd">        Raises:</span>
+</span><span id="Coverages.get-29"><a href="#Coverages.get-29"><span class="linenos">29</span></a><span class="sd">            Exception: KeyError if missing required arg for polling</span>
+</span><span id="Coverages.get-30"><a href="#Coverages.get-30"><span class="linenos">30</span></a><span class="sd">                config (payer.id and requestTypeCode)</span>
+</span><span id="Coverages.get-31"><a href="#Coverages.get-31"><span class="linenos">31</span></a><span class="sd">            Exception: If response from coverage API failed</span>
+</span><span id="Coverages.get-32"><a href="#Coverages.get-32"><span class="linenos">32</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Coverages.get-33"><a href="#Coverages.get-33"><span class="linenos">33</span></a>        <span class="n">parameters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parseInfo</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
+</span><span id="Coverages.get-34"><a href="#Coverages.get-34"><span class="linenos">34</span></a>        <span class="n">parameters</span><span class="o">=</span><span class="p">{</span><span class="n">x</span><span class="p">:</span><span class="n">parameters</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">parameters</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="n">parameters</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">}</span>
+</span><span id="Coverages.get-35"><a href="#Coverages.get-35"><span class="linenos">35</span></a>
+</span><span id="Coverages.get-36"><a href="#Coverages.get-36"><span class="linenos">36</span></a>        <span class="c1"># Parameter cleaning, not implemented right now because of lack of ability to test.</span>
+</span><span id="Coverages.get-37"><a href="#Coverages.get-37"><span class="linenos">37</span></a>
+</span><span id="Coverages.get-38"><a href="#Coverages.get-38"><span class="linenos">38</span></a>        <span class="c1"># try:</span>
+</span><span id="Coverages.get-39"><a href="#Coverages.get-39"><span class="linenos">39</span></a>        <span class="c1">#     self.checkRequiredArgs(parameters, parameters[&#39;payer&#39;][&#39;id&#39;], 207)</span>
+</span><span id="Coverages.get-40"><a href="#Coverages.get-40"><span class="linenos">40</span></a>        <span class="c1"># except KeyError as err:</span>
+</span><span id="Coverages.get-41"><a href="#Coverages.get-41"><span class="linenos">41</span></a>        <span class="c1">#     raise Exception(&#39;Missing key search parameter(payer id or request type code)&#39;) from err</span>
+</span><span id="Coverages.get-42"><a href="#Coverages.get-42"><span class="linenos">42</span></a>
+</span><span id="Coverages.get-43"><a href="#Coverages.get-43"><span class="linenos">43</span></a>        <span class="k">try</span><span class="p">:</span>
+</span><span id="Coverages.get-44"><a href="#Coverages.get-44"><span class="linenos">44</span></a>            <span class="n">coveragePoll</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+</span><span id="Coverages.get-45"><a href="#Coverages.get-45"><span class="linenos">45</span></a>                <span class="n">url</span><span class="o">=</span><span class="s1">&#39;https://api.availity.com/availity/v1/coverages&#39;</span><span class="p">,</span>
+</span><span id="Coverages.get-46"><a href="#Coverages.get-46"><span class="linenos">46</span></a>                <span class="n">headers</span><span class="o">=</span><span class="p">{</span>
+</span><span id="Coverages.get-47"><a href="#Coverages.get-47"><span class="linenos">47</span></a>                    <span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">authentication</span><span class="p">,</span>
+</span><span id="Coverages.get-48"><a href="#Coverages.get-48"><span class="linenos">48</span></a>                    <span class="s1">&#39;Content-Type&#39;</span><span class="p">:</span> <span class="s1">&#39;application/x-www-form-urlencoded&#39;</span>
+</span><span id="Coverages.get-49"><a href="#Coverages.get-49"><span class="linenos">49</span></a>                <span class="p">},</span>
+</span><span id="Coverages.get-50"><a href="#Coverages.get-50"><span class="linenos">50</span></a>                <span class="n">data</span><span class="o">=</span><span class="n">parameters</span>
+</span><span id="Coverages.get-51"><a href="#Coverages.get-51"><span class="linenos">51</span></a>            <span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+</span><span id="Coverages.get-52"><a href="#Coverages.get-52"><span class="linenos">52</span></a>            <span class="n">coverages</span> <span class="o">=</span> <span class="n">coveragePoll</span><span class="p">[</span><span class="s1">&#39;coverages&#39;</span><span class="p">]</span>
+</span><span id="Coverages.get-53"><a href="#Coverages.get-53"><span class="linenos">53</span></a>        <span class="k">except</span><span class="p">:</span>
+</span><span id="Coverages.get-54"><a href="#Coverages.get-54"><span class="linenos">54</span></a>            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error polling coverage information</span><span class="se">\n</span><span class="s2">&quot;</span>
+</span><span id="Coverages.get-55"><a href="#Coverages.get-55"><span class="linenos">55</span></a>                  <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">coveragePoll</span><span class="p">[</span><span class="s1">&#39;error&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2"> coveragePoll[&#39;error_description&#39;]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="Coverages.get-56"><a href="#Coverages.get-56"><span class="linenos">56</span></a>
+</span><span id="Coverages.get-57"><a href="#Coverages.get-57"><span class="linenos">57</span></a>        <span class="n">ids</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">coverages</span><span class="p">)</span>
+</span><span id="Coverages.get-58"><a href="#Coverages.get-58"><span class="linenos">58</span></a>        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">coverages</span><span class="p">)):</span>
+</span><span id="Coverages.get-59"><a href="#Coverages.get-59"><span class="linenos">59</span></a>            <span class="n">ids</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">coverages</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
+</span><span id="Coverages.get-60"><a href="#Coverages.get-60"><span class="linenos">60</span></a>
+</span><span id="Coverages.get-61"><a href="#Coverages.get-61"><span class="linenos">61</span></a>        <span class="k">if</span> <span class="n">returnIds</span><span class="p">:</span> 
+</span><span id="Coverages.get-62"><a href="#Coverages.get-62"><span class="linenos">62</span></a>            <span class="k">return</span> <span class="n">ids</span>
+</span><span id="Coverages.get-63"><a href="#Coverages.get-63"><span class="linenos">63</span></a>        
+</span><span id="Coverages.get-64"><a href="#Coverages.get-64"><span class="linenos">64</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">getCoveragesSearch</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span>
 </span></pre></div>
 
 
@@ -336,68 +339,69 @@ Can be used to view plan benefits and current status.</p>
 <h6 id="arguments">Arguments:</h6>
 
 <ul>
-<li><strong>returnIds (bool):</strong>  if returning a list of the coverage search Ids (True)</li>
-<li>or the coverage details (false). Defaults to False. </li>
-<li><strong>_patient (json | string | dict), optional:</strong>  json or filename for patient if not using </li>
-<li>default set for class. </li>
+<li><strong>returnIds (bool):</strong>  if returning a list of the coverage search 
+Ids (True) or the coverage details (false). Defaults to False. </li>
+<li><strong>parameters (json | dict | filename):</strong>  the search parameters 
+(patient member id, dob, state, etc). </li>
 </ul>
 
 <h6 id="returns">Returns:</h6>
 
 <blockquote>
-  <p>list[str] | json: returns list of ids (strings) or a list of coverages in json format. </p>
+  <p>list[str] | json: returns list of ids (strings) or a list of 
+      coverages in json format. </p>
 </blockquote>
 
 <h6 id="raises">Raises:</h6>
 
 <ul>
-<li><strong>Exception:</strong>  KeyError if missing required arg for polling </li>
-<li>config (payer.id and requestTypeCode)</li>
+<li><strong>Exception:</strong>  KeyError if missing required arg for polling
+config (payer.id and requestTypeCode)</li>
 <li><strong>Exception:</strong>  If response from coverage API failed</li>
 </ul>
 </div>
 
 
                             </div>
-                            <div id="Coverages.getCoveragesSearch" class="classattr">
-                                        <input id="Coverages.getCoveragesSearch-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+                            <div id="Coverages.getById" class="classattr">
+                                        <input id="Coverages.getById-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 <div class="attr function">
             
         <span class="def">def</span>
-        <span class="name">getCoveragesSearch</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">ids</span></span><span class="return-annotation">):</span></span>
+        <span class="name">getById</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">ids</span></span><span class="return-annotation">):</span></span>
 
-                <label class="view-source-button" for="Coverages.getCoveragesSearch-view-source"><span>View Source</span></label>
+                <label class="view-source-button" for="Coverages.getById-view-source"><span>View Source</span></label>
 
     </div>
-    <a class="headerlink" href="#Coverages.getCoveragesSearch"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="Coverages.getCoveragesSearch-65"><a href="#Coverages.getCoveragesSearch-65"><span class="linenos">65</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">getCoveragesSearch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ids</span><span class="p">):</span>
-</span><span id="Coverages.getCoveragesSearch-66"><a href="#Coverages.getCoveragesSearch-66"><span class="linenos">66</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets coverage details based on search Ids (from coveragePolling())</span>
-</span><span id="Coverages.getCoveragesSearch-67"><a href="#Coverages.getCoveragesSearch-67"><span class="linenos">67</span></a>
-</span><span id="Coverages.getCoveragesSearch-68"><a href="#Coverages.getCoveragesSearch-68"><span class="linenos">68</span></a><span class="sd">        Args:</span>
-</span><span id="Coverages.getCoveragesSearch-69"><a href="#Coverages.getCoveragesSearch-69"><span class="linenos">69</span></a><span class="sd">            ids (list[str])</span>
-</span><span id="Coverages.getCoveragesSearch-70"><a href="#Coverages.getCoveragesSearch-70"><span class="linenos">70</span></a>
-</span><span id="Coverages.getCoveragesSearch-71"><a href="#Coverages.getCoveragesSearch-71"><span class="linenos">71</span></a><span class="sd">        Returns:</span>
-</span><span id="Coverages.getCoveragesSearch-72"><a href="#Coverages.getCoveragesSearch-72"><span class="linenos">72</span></a><span class="sd">            json: format &quot;coverages&quot;:[list of coverage details per ids]</span>
-</span><span id="Coverages.getCoveragesSearch-73"><a href="#Coverages.getCoveragesSearch-73"><span class="linenos">73</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="Coverages.getCoveragesSearch-74"><a href="#Coverages.getCoveragesSearch-74"><span class="linenos">74</span></a>
-</span><span id="Coverages.getCoveragesSearch-75"><a href="#Coverages.getCoveragesSearch-75"><span class="linenos">75</span></a>        <span class="n">results</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;coverages&#39;</span><span class="p">:</span> <span class="p">[]}</span>
-</span><span id="Coverages.getCoveragesSearch-76"><a href="#Coverages.getCoveragesSearch-76"><span class="linenos">76</span></a>        <span class="k">for</span> <span class="nb">id</span> <span class="ow">in</span> <span class="n">ids</span><span class="p">:</span>
-</span><span id="Coverages.getCoveragesSearch-77"><a href="#Coverages.getCoveragesSearch-77"><span class="linenos">77</span></a>            <span class="n">searchPoll</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-</span><span id="Coverages.getCoveragesSearch-78"><a href="#Coverages.getCoveragesSearch-78"><span class="linenos">78</span></a>                <span class="n">url</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;https://api.availity.com/availity/v1/coverages/</span><span class="si">{</span><span class="nb">id</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
-</span><span id="Coverages.getCoveragesSearch-79"><a href="#Coverages.getCoveragesSearch-79"><span class="linenos">79</span></a>                <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">authentication</span><span class="p">},</span>
-</span><span id="Coverages.getCoveragesSearch-80"><a href="#Coverages.getCoveragesSearch-80"><span class="linenos">80</span></a>            <span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
-</span><span id="Coverages.getCoveragesSearch-81"><a href="#Coverages.getCoveragesSearch-81"><span class="linenos">81</span></a>            <span class="n">results</span><span class="p">[</span><span class="s1">&#39;coverages&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">searchPoll</span><span class="p">)</span>
-</span><span id="Coverages.getCoveragesSearch-82"><a href="#Coverages.getCoveragesSearch-82"><span class="linenos">82</span></a>
-</span><span id="Coverages.getCoveragesSearch-83"><a href="#Coverages.getCoveragesSearch-83"><span class="linenos">83</span></a>        <span class="k">return</span> <span class="n">results</span>
+    <a class="headerlink" href="#Coverages.getById"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="Coverages.getById-66"><a href="#Coverages.getById-66"><span class="linenos">66</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">getById</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ids</span><span class="p">):</span>
+</span><span id="Coverages.getById-67"><a href="#Coverages.getById-67"><span class="linenos">67</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets coverage details based on search Ids (from self.get())</span>
+</span><span id="Coverages.getById-68"><a href="#Coverages.getById-68"><span class="linenos">68</span></a>
+</span><span id="Coverages.getById-69"><a href="#Coverages.getById-69"><span class="linenos">69</span></a><span class="sd">        Args:</span>
+</span><span id="Coverages.getById-70"><a href="#Coverages.getById-70"><span class="linenos">70</span></a><span class="sd">            ids (list[str]): list of search id&#39;s as returned from self.get()</span>
+</span><span id="Coverages.getById-71"><a href="#Coverages.getById-71"><span class="linenos">71</span></a>
+</span><span id="Coverages.getById-72"><a href="#Coverages.getById-72"><span class="linenos">72</span></a><span class="sd">        Returns:</span>
+</span><span id="Coverages.getById-73"><a href="#Coverages.getById-73"><span class="linenos">73</span></a><span class="sd">            json: format &quot;coverages&quot;:[list of coverage details per ids]</span>
+</span><span id="Coverages.getById-74"><a href="#Coverages.getById-74"><span class="linenos">74</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Coverages.getById-75"><a href="#Coverages.getById-75"><span class="linenos">75</span></a>
+</span><span id="Coverages.getById-76"><a href="#Coverages.getById-76"><span class="linenos">76</span></a>        <span class="n">results</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;coverages&#39;</span><span class="p">:</span> <span class="p">[]}</span>
+</span><span id="Coverages.getById-77"><a href="#Coverages.getById-77"><span class="linenos">77</span></a>        <span class="k">for</span> <span class="nb">id</span> <span class="ow">in</span> <span class="n">ids</span><span class="p">:</span>
+</span><span id="Coverages.getById-78"><a href="#Coverages.getById-78"><span class="linenos">78</span></a>            <span class="n">searchPoll</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+</span><span id="Coverages.getById-79"><a href="#Coverages.getById-79"><span class="linenos">79</span></a>                <span class="n">url</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;https://api.availity.com/availity/v1/coverages/</span><span class="si">{</span><span class="nb">id</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+</span><span id="Coverages.getById-80"><a href="#Coverages.getById-80"><span class="linenos">80</span></a>                <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">authentication</span><span class="p">},</span>
+</span><span id="Coverages.getById-81"><a href="#Coverages.getById-81"><span class="linenos">81</span></a>            <span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+</span><span id="Coverages.getById-82"><a href="#Coverages.getById-82"><span class="linenos">82</span></a>            <span class="n">results</span><span class="p">[</span><span class="s1">&#39;coverages&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">searchPoll</span><span class="p">)</span>
+</span><span id="Coverages.getById-83"><a href="#Coverages.getById-83"><span class="linenos">83</span></a>
+</span><span id="Coverages.getById-84"><a href="#Coverages.getById-84"><span class="linenos">84</span></a>        <span class="k">return</span> <span class="n">results</span>
 </span></pre></div>
 
 
-            <div class="docstring"><p>Gets coverage details based on search Ids (from coveragePolling())</p>
+            <div class="docstring"><p>Gets coverage details based on search Ids (from self.get())</p>
 
 <h6 id="arguments">Arguments:</h6>
 
 <ul>
-<li>ids (list[str])</li>
+<li><strong>ids (list[str]):</strong>  list of search id's as returned from self.get()</li>
 </ul>
 
 <h6 id="returns">Returns:</h6>
