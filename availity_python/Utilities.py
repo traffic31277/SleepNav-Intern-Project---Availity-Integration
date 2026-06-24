@@ -1,12 +1,13 @@
 import json
-from AvailityCoverages import Coverages
-from AvailityServiceReviews import ServiceReview
+from availity_python import Coverages, ServiceReviews
 from hashlib import md5
 
-#TODO: fill out sample json responses to test parsing. 
-#TODO: fix the dict/json discrepencies
 #TODO: figure out how to determine if in network
-#TODO: is cost containment an object?
+# Cost Containment is a benefit detail object
+# Do speed test.....    python -m timeit    js its performance.now()
+
+
+# TODO: write complete documentation
 
 def retrieveInfo(key: str, secret: str, params: json, api: str) -> str:
     """Retrieve cached response info
@@ -20,9 +21,9 @@ def retrieveInfo(key: str, secret: str, params: json, api: str) -> str:
         tuple[str, str]: (hash for coverages results, hash for service review results)
     """
     if api == "coverages":
-        apiEntry = Coverages(key, secret)
+        apiEntry = Coverages.Coverages(key, secret)
     elif api == "serviceReview":
-        apiEntry = ServiceReview(key, secret)
+        apiEntry = ServiceReviews.ServiceReview(key, secret)
     else:
         raise Exception("Did not enter valid api, choose 'coverages' or 'serviceReview'")
 
@@ -66,9 +67,9 @@ def readCachedFile(key, secret, params, hash:tuple[str, str]=None) -> json:
 
 def getFromApi(key: str, secret: str, params: json, api: str) -> json:
     if api == "coverages":
-        api = Coverages(key, secret)
+        api = Coverages.Coverages(key, secret)
     elif api == "serviceReview":
-        api = ServiceReview(key, secret)
+        api = ServiceReviews.ServiceReview(key, secret)
     else:
         raise Exception("Did not enter valid api, choose 'coverages' or 'serviceReview'")
     
@@ -89,11 +90,11 @@ def validateInsurance(key, secret, params, hash=None):
             insuranceTypeCode (HMO?, etc), type (Medical Care, Vision, etc.)
     """
 
-    coverages = getFromApi(key, secret, params, "coverages")['coverages'][0]
-
-    # uncomment if using cache
-    # ApiResults = readCachedFile(key, secret, params, ("coverages", hash))
-    # coverages = ApiResults['data']['coverages'][0]
+    if hash is None:
+        coverages = getFromApi(key, secret, params, "coverages")['coverages'][0]
+    else:
+        ApiResults = readCachedFile(key, secret, params, ("coverages", hash))
+        coverages = ApiResults['data']['coverages'][0]
 
     res = []
 
@@ -225,7 +226,7 @@ def patientPaymentInfo(key, secret, params, hash=None):
 
             for i in ['outOfPocket', 'deductibles', 'coInsurance', 'coPayment']:
                 benefits[i] = None
-                
+
                 try:
                     benefits[i] = (benefit['amounts'][i][network]['amount'],
                                 benefit['amounts'][i][network]['unit'])

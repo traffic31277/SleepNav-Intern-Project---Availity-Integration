@@ -1,8 +1,8 @@
 import requests 
 import json
-from AvailityAbstract import AvailityABC
+from availity_python import Availity
 
-class PayerList(AvailityABC):
+class PayerList(Availity.AvailityABC):
     """ Provides access to the Healthcare Transactions Payer List API"""
     def __init__(self, key, secret):
         super().__init__(key, secret, None)

@@ -1,8 +1,8 @@
 import requests
 import json
-from AvailityAbstract import AvailityABC
+from availity_python import Availity
 
-class ServiceReview(AvailityABC):
+class ServiceReview(Availity.AvailityABC):
     """Provides access to the Health Transactions Service Reviews API. 
     Can be used to create/view Authorization and Referral Requests
     """

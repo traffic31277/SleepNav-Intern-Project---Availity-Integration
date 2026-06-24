@@ -1,9 +1,8 @@
 import requests
 import json
-from AvailityAbstract import AvailityABC
+from availity_python import Availity
 
-
-class Coverages(AvailityABC):
+class Coverages(Availity.AvailityABC):
     """Provides access to the Health Transactions Coverages API. 
     Can be used to view plan benefits and current status.
     """

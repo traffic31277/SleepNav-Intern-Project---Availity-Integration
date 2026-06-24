@@ -2,7 +2,6 @@ import { coveragePolling } from "./AvailityCoverages.js";
 import { checkRequiredArgs } from "./AvailityConfig.js";
 import { authsbyId, pollAuthorizations } from "./AvailityServiceReviews.js";
 
-//TODO: write docstrings
 
 /**
  * Pulls from requested API based on input parameters
