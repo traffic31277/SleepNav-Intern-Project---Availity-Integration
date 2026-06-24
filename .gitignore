@@ -10,6 +10,7 @@
 
 # ignore cache
 cache/*
+*/out/*
 
 # Node modules
 /integration_js/node_modules

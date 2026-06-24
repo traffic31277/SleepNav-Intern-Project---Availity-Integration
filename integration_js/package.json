@@ -11,7 +11,8 @@
   "license": "ISC",
   "type": "module",
   "devDependencies": {
-    "axios": "^1.17.0"
+    "axios": "^1.17.0",
+    "jsdoc": "^4.0.5"
   },
   "dependencies": {
     "async": "^3.2.6",
