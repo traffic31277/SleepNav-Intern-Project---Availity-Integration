@@ -1,9 +1,10 @@
-import _login from './_login.json' with {type: 'json'};
-import { coveragePolling, getCoverageSearch } from './AvailityCoverages.js';
-import { pullBenefits, validateInsurance,patientPaymentInfo } from './AvailityFunctions.js';
-import { pollAuthorizations, authsbyId } from './AvailityServiceReviews.js';
+/**
+ * 
+ * @module Token
+ */
 // import { searchPayerList } from './AvailityPayerList.js';
 import axios from 'axios';
+import _login from './_login.json' with {type: "json"};
 
 // config stuff
 axios.defaults.baseURL="https://api.availity.com";
@@ -14,7 +15,7 @@ axios.defaults.baseURL="https://api.availity.com";
 * @param {string} secret - The api secret, defaults to API_SECRET in login.json.
 * @return {string} The token returned given the credentials
 */
-async function getToken(key=_login.API_KEY, secret=_login.API_SECRET) {
+async function getToken(key=API_KEY, secret=API_SECRET) {
     const url = "/v1/token";
     try {
         const response = await axios.post(
@@ -42,16 +43,3 @@ export async function resetToken() {
     axios.defaults.headers.common['Authorization'] = "Bearer " + token;
 };
 
-/**
- * TESTING MAIN FUNCTIONS
- */
-
-
-await resetToken();
-
-let data = {
-    "payer":{
-        "id": "123"
-    }
-}
-console.log(await patientPaymentInfo(data));

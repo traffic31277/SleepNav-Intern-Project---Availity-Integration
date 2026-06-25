@@ -1,6 +1,6 @@
-import patient from './_patient.json' with {type: 'json'};
-import subscriber from './_subscriber.json' with {type: 'json'};
-import provider from './_provider.json' with {type: 'json'};
+/**
+ * @module PayerList
+ */
 import axios from 'axios';
 
 const url = "/v1/availity-payer-list";

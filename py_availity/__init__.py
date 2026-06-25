@@ -8,6 +8,9 @@ Module for middleware between the Availity Healthcare Transactions API and Sleep
 Built in python 3.14.5 using [requests](https://docs.python-requests.org/en/latest/index.html
 ) library. 
 
+### JavaScript
+Javascrip documentation available [here](js_availity/index.html)
+
 ## Usage/Examples
 **Example:**
 ```python

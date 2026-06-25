@@ -13,4 +13,4 @@ cache/*
 */out/*
 
 # Node modules
-/integration_js/node_modules
+/js_availity/node_modules

@@ -1,3 +1,10 @@
+/**
+ * 
+ * 
+ * @module Config
+ */
+
+
 import axios from 'axios';
 export const url = "/v1/configurations";
 

@@ -7,6 +7,9 @@ Built in python 3.14.5 using [requests](https://docs.python-requests.org/en/late
 
 Python documentation available [here](https://traffic31277.github.io/SleepNav-Intern-Project---Availity-Integration/availity_python.html).
 
+### JavaScript
+Javascrip documentation available [here](https://traffic31277.github.io/SleepNav-Intern-Project---Availity-Integration/js_availity/index.html)
+
 ## Usage/Examples
 **Example:**
 ```python

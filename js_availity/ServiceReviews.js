@@ -1,3 +1,8 @@
+/**
+ * 
+ * @module ServiceReviews
+ */
+
 import axios from 'axios';
 const url = "/v2/service-reviews";
 let sessionId = "0";
