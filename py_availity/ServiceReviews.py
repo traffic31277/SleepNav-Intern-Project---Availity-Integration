@@ -7,7 +7,7 @@ Also, while the service reviews API *can* submit authorizations indepdently,
 
 import requests
 import json
-from availity_python import Availity
+from py_availity import Availity
 
 class ServiceReview(Availity.AvailityABC):
     """

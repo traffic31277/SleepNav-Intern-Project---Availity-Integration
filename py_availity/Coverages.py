@@ -1,6 +1,6 @@
 import requests
 import json
-from availity_python import Availity
+from py_availity import Availity
 
 class Coverages(Availity.AvailityABC):
     """Provides access to the Health Transactions Coverages API. 

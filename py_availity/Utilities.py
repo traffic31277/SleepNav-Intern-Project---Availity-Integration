@@ -1,5 +1,5 @@
 import json
-from availity_python import Coverages, ServiceReviews
+from py_availity import Coverages, ServiceReviews
 from hashlib import md5
 
 def retrieveInfo(key: str, secret: str, params, api: str) -> str:
@@ -13,14 +13,8 @@ def retrieveInfo(key: str, secret: str, params, api: str) -> str:
     Returns:
         tuple[str, str]: (hash for coverages results, hash for service review results)
     """
-    if api == "coverages":
-        apiEntry = Coverages.Coverages(key, secret)
-    elif api == "serviceReview":
-        apiEntry = ServiceReviews.ServiceReview(key, secret)
-    else:
-        raise Exception("Did not enter valid api, choose 'coverages' or 'serviceReview'")
 
-    JSONresult = apiEntry.get(params)
+    JSONresult = getFromApi(key, secret, params, api)
     hash = md5(json.dumps(JSONresult, sort_keys=True, indent=2).encode("utf-8")).hexdigest()
       
     with open(f'..\\cache\\{hash}', 'w+', encoding="utf-8") as file:
@@ -59,6 +53,16 @@ def readCachedFile(key, secret, params, hash:tuple[str, str]=None):
         return readCachedFile(key, secret, params, (hash[0], _hash))
 
 def getFromApi(key: str, secret: str, params, api: str):
+    """Helper function to clean up api pull. Differentiated by retrieveInfo
+        because it doe not cache file. 
+
+    Args: 
+        api (str): "coverages" or "serviceReview"
+
+    Returns:
+        json: results of the  
+    """
+
     if api == "coverages":
         api = Coverages.Coverages(key, secret)
     elif api == "serviceReview":

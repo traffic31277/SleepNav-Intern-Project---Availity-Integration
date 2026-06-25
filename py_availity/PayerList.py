@@ -1,6 +1,6 @@
 import requests 
 import json
-from availity_python import Availity
+from py_availity import Availity
 
 """
 While not currently in use in utilities, it could be used to determine if a payer
